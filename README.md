@@ -1,4 +1,5 @@
 ![Build](https://github.com/CenturioHackMoney21/centurio-back/workflows/Build/badge.svg)
+![Deploy](https://github.com/CenturioHackMoney21/centurio-back/workflows/Deploy/badge.svg)
 
 ## Getting Started
 
