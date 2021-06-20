@@ -1,3 +1,5 @@
+package fr.hadaly
+
 import fr.hadaly.service.DatabaseFactory
 import io.ktor.application.*
 import io.ktor.features.*

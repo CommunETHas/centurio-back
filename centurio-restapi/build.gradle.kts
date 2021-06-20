@@ -37,5 +37,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("fr.hadaly.MainKt")
 }
