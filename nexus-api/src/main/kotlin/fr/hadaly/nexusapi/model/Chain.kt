@@ -1,7 +1,7 @@
-package fr.hadaly.model
+package fr.hadaly.nexusapi.model
 
 import kotlinx.serialization.Serializable
-import fr.hadaly.model.serializer.ChainSerializer
+import fr.hadaly.nexusapi.model.serializer.ChainSerializer
 
 @Serializable(with = ChainSerializer::class)
 enum class Chain {

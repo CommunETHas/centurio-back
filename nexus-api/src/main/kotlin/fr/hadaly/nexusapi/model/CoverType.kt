@@ -1,6 +1,6 @@
-package fr.hadaly.model
+package fr.hadaly.nexusapi.model
 
-import fr.hadaly.model.serializer.CoverTypeSerializer
+import fr.hadaly.nexusapi.model.serializer.CoverTypeSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable(with = CoverTypeSerializer::class)

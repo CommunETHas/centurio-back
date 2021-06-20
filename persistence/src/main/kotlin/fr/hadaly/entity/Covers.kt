@@ -13,7 +13,7 @@ object Covers : IntIdTable() {
     val site = varchar("site", 255).nullable()
     val symbol = varchar("symbol", 10).nullable()
     val underlyingToken = varchar("underlyingToken", 255).nullable()
-    val dateAdded = long("dateAdded").nullable()
+    val dateAdded = long("dateAdded")
     val deprecated = bool("deprecated").nullable()
     val logo = varchar("logo", 255).nullable()
     override val primaryKey = PrimaryKey(id)

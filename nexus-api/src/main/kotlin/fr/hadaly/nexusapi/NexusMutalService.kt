@@ -1,7 +1,6 @@
-package fr.hadaly
+package fr.hadaly.nexusapi
 
-import fr.hadaly.model.Cover
-import org.web3j.abi.datatypes.Address
+import fr.hadaly.nexusapi.model.Cover
 
 interface NexusMutalService {
     suspend fun getCoverContracts() : Map<String, Cover>

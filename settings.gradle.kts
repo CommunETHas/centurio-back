@@ -1,3 +1,3 @@
 rootProject.name = "centurio"
 
-include("centurio-restapi", "nexus-api", "persistence")
+include("centurio-restapi", "nexus-api", "persistence", "ethplorer-api", "centurio-core")

@@ -7,6 +7,7 @@ val logbackVersion = "1.2.3"
 val assertjVersion = "3.20.2"
 val restAssuredVersion = "4.4.0"
 val junitVersion = "5.7.2"
+val koinVersion = "3.1.0"
 
 plugins {
     kotlin("plugin.serialization") version "1.5.10"
@@ -17,6 +18,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(project(":nexus-api"))
     implementation(project(":persistence"))
+    implementation(project(":centurio-core"))
 
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")

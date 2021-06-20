@@ -1,6 +1,7 @@
 package db.migration
 
 import fr.hadaly.entity.Chains
+import fr.hadaly.entity.ChainsCovers
 import fr.hadaly.entity.Covers
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -12,6 +13,7 @@ class V1__create_widgets: BaseJavaMigration() {
         transaction {
             SchemaUtils.create(Chains)
             SchemaUtils.create(Covers)
+            SchemaUtils.create(ChainsCovers)
         }
     }
 }

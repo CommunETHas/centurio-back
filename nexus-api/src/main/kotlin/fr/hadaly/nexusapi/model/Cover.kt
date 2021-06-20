@@ -1,6 +1,8 @@
-package fr.hadaly.model
+package fr.hadaly.nexusapi.model
 
+import fr.hadaly.nexusapi.model.serializer.DateAddedSerializer
 import kotlinx.serialization.Serializable
+import java.util.*
 
 @Serializable
 data class Cover(
@@ -10,8 +12,9 @@ data class Cover(
     val symbol: String? = null,
     val underlyingToken: String? = null,
     val supportedChains: List<Chain> = emptyList(),
-    val dateAdded: String,
-    val deprecated: String? = null,
+    @Serializable(with = DateAddedSerializer::class)
+    val dateAdded: Date,
+    val deprecated: Boolean = false,
     val logo: String? = null,
     val github: String? = null,
     val messari: String? = null,
