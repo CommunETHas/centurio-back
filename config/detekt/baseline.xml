@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues>
+    <ID>MatchingDeclarationName:CoverResource.kt$Cover</ID>
+  </ManuallySuppressedIssues>
+  <CurrentIssues>
+      <ID>ClassNaming:V1__create_widgets.kt$V1__create_widgets : BaseJavaMigration</ID>
+      <ID>EmptyKtFile:settings.gradle.kts$.settings.gradle.kts</ID>
+  </CurrentIssues>
+</SmellBaseline>
