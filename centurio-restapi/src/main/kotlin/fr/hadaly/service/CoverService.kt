@@ -3,8 +3,8 @@ package fr.hadaly.service
 import fr.hadaly.nexusapi.NexusMutalService
 import fr.hadaly.entity.CoverEntity
 import fr.hadaly.entity.Covers
+import fr.hadaly.model.Cover
 import fr.hadaly.nexusapi.model.Chain
-import fr.hadaly.nexusapi.model.Cover
 import fr.hadaly.nexusapi.model.CoverType
 import fr.hadaly.service.DatabaseFactory.dbQuery
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.slf4j.LoggerFactory
-import java.util.*
 
 class CoverService : KoinComponent {
 
@@ -66,8 +65,8 @@ class CoverService : KoinComponent {
     private fun CoverEntity.toCover() =
         Cover(
             name = name,
+            address = address,
             type = CoverType.valueOf(type),
-            dateAdded = Date(dateAdded),
             supportedChains = supportedChains.map { Chain.valueOf(it.name) }
         )
 }

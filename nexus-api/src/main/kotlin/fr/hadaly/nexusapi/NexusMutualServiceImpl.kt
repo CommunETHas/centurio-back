@@ -1,6 +1,6 @@
 package fr.hadaly.nexusapi
 
-import fr.hadaly.nexusapi.model.Cover
+import fr.hadaly.nexusapi.model.CoverInfo
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -20,7 +20,7 @@ class NexusMutualServiceImpl: NexusMutalService {
         serializer<Serializer>()
     }
 
-    override suspend fun getCoverContracts() : Map<String, Cover> {
+    override suspend fun getCoverContracts() : Map<String, CoverInfo> {
 
         val url = "$baseUrl/coverables/contracts.json"
         val response = client.get<HttpStatement>(url)
@@ -30,7 +30,7 @@ class NexusMutualServiceImpl: NexusMutalService {
             val data = withContext(Dispatchers.IO) {
                 response.content.copyTo(f.outputStream())
                 val st = f.readText().replace("\"deprecated\": \"true\"", "\"deprecated\": true")
-                val data = Json.decodeFromString<Map<String, Cover>>(st)
+                val data = Json.decodeFromString<Map<String, CoverInfo>>(st)
                 data
             }
             data

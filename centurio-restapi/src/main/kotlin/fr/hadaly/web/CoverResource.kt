@@ -19,7 +19,7 @@ fun Route.cover(coverService: CoverService, engine: RecommandationEngine) {
             call.respond(coverService.getAllCovers())
         }
 
-        post("/recommend/{wallet}") {
+        get("/recommend/{wallet}") {
             if (call.parameters.contains("wallet")) {
                 val wallet = call.parameters.getOrFail("wallet")
                 engine.recommendFor(wallet)

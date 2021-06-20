@@ -9,4 +9,10 @@
 
 ### Routes:
 
-TBD
+#### All covers
+
+GET /cover
+
+#### Cover Recommandation
+
+GET /cover/recommend/{address}
