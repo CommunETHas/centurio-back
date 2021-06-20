@@ -12,6 +12,7 @@ import util.JsonMapper
 import web.cover
 import web.index
 
+@Suppress("unused") // Referenced in application.conf
 @ExperimentalCoroutinesApi
 fun Application.module() {
     install(DefaultHeaders)

@@ -49,3 +49,7 @@ project(":nexus-api") {}
 project(":centurio-restapi") {}
 
 project(":persistence") {}
+
+tasks.create("stage") {
+    dependsOn("installDist")
+}
