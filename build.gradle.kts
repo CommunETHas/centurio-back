@@ -51,5 +51,5 @@ project(":centurio-restapi") {}
 project(":persistence") {}
 
 tasks.create("stage") {
-    dependsOn("installDist")
+    dependsOn("centurio-restapi:installDist")
 }
