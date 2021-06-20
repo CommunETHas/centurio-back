@@ -1,1 +1,1 @@
-web: ./build/install/centurio/bin/centurio
+web: ./centurio-restapi/build/install/centurio-restapi/bin/centurio-restapi
