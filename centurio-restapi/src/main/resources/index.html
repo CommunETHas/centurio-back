@@ -10,11 +10,7 @@
 <body>
 <h1 id="routes-">Routes:</h1>
 <p><code>GET /cover</code> --&gt; get all Nexus Mutual covers in the database</p>
-<p><code>POST /cover</code> --&gt; get all covers for specific address </p>
-<pre><code>{
-    <span class="hljs-attr">"address"</span>: <span class="hljs-string">"wallet address"</span>
-}
-</code></pre>
+<p><code>POST /cover/recommend/{wallet address}</code> --&gt; get all covers for specific address </p>
 <p>returns</p>
 <pre><code>{
     TBD
