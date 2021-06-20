@@ -7,10 +7,10 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import service.CoverService
-import util.JsonMapper
-import web.cover
-import web.index
+import fr.hadaly.service.CoverService
+import fr.hadaly.util.JsonMapper
+import fr.hadaly.web.cover
+import fr.hadaly.web.index
 
 @Suppress("unused") // Referenced in application.conf
 @ExperimentalCoroutinesApi

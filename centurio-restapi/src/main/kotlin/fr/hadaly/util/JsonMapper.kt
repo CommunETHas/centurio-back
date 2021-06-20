@@ -1,4 +1,4 @@
-package util
+package fr.hadaly.util
 
 import kotlinx.serialization.json.Json
 

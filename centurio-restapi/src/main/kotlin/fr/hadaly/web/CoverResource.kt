@@ -1,15 +1,15 @@
-package web
+package fr.hadaly.web
 
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import service.CoverService
+import fr.hadaly.service.CoverService
 
 @ExperimentalCoroutinesApi
 fun Route.cover(coverService: CoverService) {
 
-    route("/widget") {
+    route("/cover") {
 
         get {
             call.respond(coverService.getAllCovers())

@@ -1,4 +1,4 @@
-package service
+package fr.hadaly.service
 
 import fr.hadaly.entity.CoverEntity
 import fr.hadaly.entity.Covers

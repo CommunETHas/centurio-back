@@ -50,6 +50,7 @@ project(":centurio-restapi") {}
 
 project(":persistence") {}
 
+// Task for Heroku deployment
 tasks.create("stage") {
     dependsOn("centurio-restapi:installDist")
 }

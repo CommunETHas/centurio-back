@@ -1,4 +1,4 @@
-package web
+package fr.hadaly.web
 
 import io.ktor.application.call
 import io.ktor.http.ContentType

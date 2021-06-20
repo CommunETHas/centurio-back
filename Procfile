@@ -1,1 +1,1 @@
-web: ./centurio-restapi/build/install/centurio-restapi/bin/centurio-restapi
+fr.hadaly.web: ./centurio-restapi/build/install/centurio-restapi/bin/centurio-restapi
