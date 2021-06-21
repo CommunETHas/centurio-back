@@ -39,7 +39,7 @@ fun Application.module() {
             DatabaseFactory.connectAndMigrate()
         }
         isProd -> {
-            val dbUrl = System.getenv("JDBC_DATABASE_URL")
+            val dbUrl = System.getenv("DATABASE_URL")
             DatabaseFactory.connectAndMigrate(dbUrl)
         }
     }
