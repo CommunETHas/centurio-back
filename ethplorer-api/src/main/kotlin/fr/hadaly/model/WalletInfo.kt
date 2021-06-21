@@ -1,9 +1,9 @@
 package fr.hadaly.model
 
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class WalletInfo(
+    val address: String,
+    val ethInfo: EthInfo,
     val transactionCount: Int,
-    val tokens: List<Token>
+    val tokens: List<Token>,
 )

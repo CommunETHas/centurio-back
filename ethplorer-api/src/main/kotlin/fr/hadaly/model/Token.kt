@@ -16,15 +16,15 @@ data class Token(
 @Serializable
 data class TokenInfo(
     val address: String, // Address
-    val coingecko: String,
+    val coingecko: String? = null,
     val decimals: Int,
-    val ethTransfersCount: Int,
+    val ethTransfersCount: Int? = null,
     val holdersCount: Int,
-    val image: String,
+    val image: String? = null,
     val issuancesCount: Int,
     val lastUpdated: Long,
     val name: String,
-    val owner: String, // Address
+    val owner: String? = null, // Address
     @Serializable(with = BigIntegerSerializer::class)
     val totalSupply: BigInteger
 )
