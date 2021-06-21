@@ -34,7 +34,16 @@ fun Application.module() {
         modules(restapiModule, nexusApiModule)
     }
 
-    DatabaseFactory.connectAndMigrate()
+    when {
+        isDev -> {
+            DatabaseFactory.connectAndMigrate()
+        }
+        isProd -> {
+            val dbUrl = System.getenv("DATABASE_URL")
+            DatabaseFactory.connectAndMigrate(dbUrl)
+        }
+    }
+
 
     install(Routing) {
         index()
@@ -46,3 +55,7 @@ fun Application.module() {
 fun main(args: Array<String>) {
     embeddedServer(Netty, commandLineEnvironment(args)).start(wait = true)
 }
+
+val Application.envKind get() = environment.config.property("ktor.deployment.environment").getString()
+val Application.isDev get() = envKind == "dev"
+val Application.isProd get() = envKind != "dev"

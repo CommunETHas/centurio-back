@@ -14,21 +14,30 @@ object DatabaseFactory {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    fun connectAndMigrate() {
+    fun connectAndMigrate(dbUrl: String? = null) {
         log.info("Initialising database")
-        val pool = hikari()
+        val pool = hikari(dbUrl)
         Database.connect(pool)
         runFlyway(pool)
     }
 
-    private fun hikari(): HikariDataSource {
-        val config = HikariConfig().apply {
-            driverClassName = "org.h2.Driver"
-            jdbcUrl = "jdbc:h2:mem:test"
-            maximumPoolSize = MAX_POOL_SIZE
-            isAutoCommit = false
-            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-            validate()
+    private fun hikari(dbUrl: String?): HikariDataSource {
+        val config = if (dbUrl.isNullOrBlank()) {
+            HikariConfig().apply {
+                driverClassName = "org.h2.Driver"
+                jdbcUrl = "jdbc:h2:mem:test"
+                maximumPoolSize = MAX_POOL_SIZE
+                isAutoCommit = false
+                transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+                validate()
+            }
+        } else {
+            HikariConfig().apply {
+                driverClassName = "org.postgresql.Driver"
+                jdbcUrl = dbUrl
+                transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+                validate()
+            }
         }
         return HikariDataSource(config)
     }
