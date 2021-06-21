@@ -17,7 +17,7 @@ dependencies {
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 
     implementation("com.h2database:h2:$h2Version")
-    implementation("org.postgresql:postgresql:42.2.2")
+    implementation("org.postgresql:postgresql:42.2.22")
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
