@@ -32,9 +32,13 @@ object DatabaseFactory {
                 validate()
             }
         } else {
+            val fixedDbUrl = dbUrl.split("@")
+            val credentials = fixedDbUrl[0].removePrefix("postgres://").split(":")
             HikariConfig().apply {
                 driverClassName = "org.postgresql.Driver"
-                jdbcUrl = dbUrl
+                jdbcUrl = "jdbc:postgresql://${fixedDbUrl[1]}"
+                username = credentials[0]
+                password = credentials[1]
                 transactionIsolation = "TRANSACTION_REPEATABLE_READ"
                 validate()
             }
