@@ -1,19 +1,22 @@
 package fr.hadaly
 
+import fr.hadaly.engine.di.engineModule
+import fr.hadaly.ethplorer.di.ethplorerApiModule
+import fr.hadaly.persistence.di.persistenceModule
 import fr.hadaly.nexusapi.di.nexusApiModule
-import fr.hadaly.di.restapiModule
-import fr.hadaly.service.DatabaseFactory
+import fr.hadaly.persistence.service.DatabaseFactory
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.websocket.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fr.hadaly.util.JsonMapper
 import fr.hadaly.web.cover
 import fr.hadaly.web.index
+import fr.hadaly.web.token
+import io.ktor.auth.*
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
 import org.koin.logger.slf4jLogger
@@ -23,7 +26,7 @@ import org.koin.logger.slf4jLogger
 fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
-    install(WebSockets)
+    install(Authentication)
 
     install(ContentNegotiation) {
         json(JsonMapper.defaultMapper)
@@ -31,7 +34,12 @@ fun Application.module() {
 
     install(Koin) {
         slf4jLogger()
-        modules(restapiModule, nexusApiModule)
+        modules(
+            nexusApiModule,
+            ethplorerApiModule,
+            persistenceModule,
+            engineModule
+        )
     }
 
     when {
@@ -48,6 +56,7 @@ fun Application.module() {
     install(Routing) {
         index()
         cover(get(), get())
+        token(get(), get())
     }
 
 }

@@ -1,5 +1,12 @@
+val ktorVersion = "1.6.0"
+
+plugins {
+    kotlin("plugin.serialization") version "1.5.10"
+}
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":ethplorer-api"))
+    api(project(":nexus-api"))
+    api(project(":ethplorer-api"))
+    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 }

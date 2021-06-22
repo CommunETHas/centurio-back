@@ -16,6 +16,28 @@ window.swaggerSpec={
   } ],
   "schemes" : [ "https", "http" ],
   "paths" : {
+    "/token" : {
+      "post" : {
+        "tags" : [ "token" ],
+        "summary" : "Token information",
+        "description" : "",
+        "consumes" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          }
+        },
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Token with recommended covers",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/TokenRequest"
+          }
+        } ]
+      }
+    },
     "/cover" : {
       "get" : {
         "tags" : [ "cover" ],
@@ -48,7 +70,7 @@ window.swaggerSpec={
           "200" : {
             "description" : "Successful operation",
             "schema" : {
-              "$ref" : "#/definitions/Cover"
+              "$ref" : "#/definitions/Recommandations"
             }
           },
           "400" : {
@@ -76,9 +98,12 @@ window.swaggerSpec={
           "enum" : [ "protocol", "custodian", "yield" ]
         },
         "supportedChains" : {
-          "type" : "string",
+          "type" : "array",
           "description" : "contract's chains supported",
-          "enum" : [ "ethereum", "bsc", "fantom", "polygon", "starkware", "xdai", "terra", "thorchain" ]
+          "items" : {
+            "type" : "string",
+            "enum" : [ "ethereum", "bsc", "fantom", "polygon", "starkware", "xdai", "terra", "thorchain" ]
+          }
         },
         "logo" : {
           "type" : "string",
@@ -90,6 +115,85 @@ window.swaggerSpec={
       "type" : "array",
       "items" : {
         "$ref" : "#/definitions/Cover"
+      }
+    },
+    "TokenRequest" : {
+      "type" : "object",
+      "properties" : {
+        "token" : {
+          "type" : "string",
+          "description" : "token address"
+        },
+        "covers" : {
+          "type" : "array",
+          "description" : "array of covers address",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "Recommandations" : {
+      "type" : "object",
+      "properties" : {
+        "count" : {
+          "type" : "integer"
+        },
+        "recommandations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Recommandation"
+          }
+        },
+        "unsupportedTokens" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Token"
+          }
+        }
+      }
+    },
+    "Token" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        },
+        "symbol" : {
+          "type" : "string"
+        },
+        "owner" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Recommandation" : {
+      "type" : "object",
+      "properties" : {
+        "cover" : {
+          "type" : "object",
+          "$ref" : "#/definitions/Cover"
+        },
+        "reasoning" : {
+          "type" : "object",
+          "$ref" : "#/definitions/Reasoning"
+        }
+      }
+    },
+    "Reasoning" : {
+      "type" : "object",
+      "properties" : {
+        "token" : {
+          "type" : "string",
+          "description" : "Token symbol"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Explaination"
+        }
       }
     }
   }
