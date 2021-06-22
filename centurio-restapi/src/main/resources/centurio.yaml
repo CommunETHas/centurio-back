@@ -76,3 +76,6 @@ definitions:
         - "xdai"
         - "terra"
         - "thorchain"
+      logo:
+        type: "string"
+        description: "logo filename"
