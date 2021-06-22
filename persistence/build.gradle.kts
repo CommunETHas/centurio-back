@@ -13,6 +13,8 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":centurio-core"))
+    implementation(project(":ethplorer-api"))
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 
