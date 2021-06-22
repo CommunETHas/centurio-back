@@ -5,7 +5,7 @@ info:
   title: "Centurio"
   contact:
     email: "ooctogene@gmail.com"
-host: "centurio-hm21.herokuapp.com"
+host: "centurio-hm2021.herokuapp.com"
 basePath: "/"
 tags:
 - name: "cover"
@@ -26,7 +26,7 @@ paths:
         "200":
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/Cover"
+            $ref: "#/definitions/Covers"
   /cover/recommend/{address}:
     get:
        tags:
@@ -79,3 +79,8 @@ definitions:
       logo:
         type: "string"
         description: "logo filename"
+  Covers:
+    type: "array"
+    items:
+      $ref: "#/definitions/Cover"
+

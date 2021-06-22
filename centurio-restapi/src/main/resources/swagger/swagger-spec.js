@@ -26,7 +26,7 @@ window.swaggerSpec={
           "200" : {
             "description" : "Successful operation",
             "schema" : {
-              "$ref" : "#/definitions/Cover"
+              "$ref" : "#/definitions/Covers"
             }
           }
         }
@@ -84,6 +84,12 @@ window.swaggerSpec={
           "type" : "string",
           "description" : "logo filename"
         }
+      }
+    },
+    "Covers" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Cover"
       }
     }
   }
