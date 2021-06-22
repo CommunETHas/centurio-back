@@ -1,10 +1,13 @@
 package fr.hadaly.service
 
+import fr.hadaly.entity.ChainEntity
+import fr.hadaly.entity.ChainsCovers
 import fr.hadaly.nexusapi.NexusMutalService
 import fr.hadaly.entity.CoverEntity
 import fr.hadaly.entity.Covers
 import fr.hadaly.model.Cover
 import fr.hadaly.nexusapi.model.Chain
+import fr.hadaly.nexusapi.model.CoverInfo
 import fr.hadaly.nexusapi.model.CoverType
 import fr.hadaly.service.DatabaseFactory.dbQuery
 import kotlinx.coroutines.CoroutineScope
@@ -26,24 +29,54 @@ class CoverServiceImpl : CoverService, KoinComponent {
             if (getAllCovers().isEmpty()) {
                 val nexusMutualServiceImpl: NexusMutalService = get()
                 val contracts = nexusMutualServiceImpl.getCoverContracts()
-                contracts.filter { !it.value.deprecated }.forEach { cover ->
-                    transaction {
-                        CoverEntity.new {
-                            name = cover.value.name
-                            address = cover.key
-                            type = cover.value.type.name
-                            site = cover.value.site
-                            symbol = cover.value.symbol
-                            underlyingToken = cover.value.underlyingToken
-                            dateAdded = cover.value.dateAdded.time
-                            deprecated = cover.value.deprecated
-                            logo = cover.value.logo
-                        }
+                val chainEntities = insertAllChainEntities()
+                val coverEntities = insertAllCoverEntities(contracts)
+                insertAllChainsCovers(coverEntities, chainEntities)
+            }
+        }
+    }
+
+    private fun insertAllChainsCovers(
+        coverEntities: List<Pair<CoverEntity, List<Chain>>>,
+        chainEntities: Map<Chain, ChainEntity>
+    ) {
+        transaction {
+            coverEntities.forEach { (coverEntity, chains) ->
+                chains.forEach { chainEntity ->
+                    ChainsCovers.insert {
+                        it[cover] = coverEntity.id
+                        it[chain] = chainEntities[chainEntity]!!.id
                     }
                 }
             }
         }
     }
+
+    private fun insertAllChainEntities() = transaction {
+        val chainEntities = Chain.values().associate { chain ->
+            chain to ChainEntity.new {
+                name = chain.name
+            }
+        }
+        chainEntities
+    }
+
+    private fun insertAllCoverEntities(contracts: Map<String, CoverInfo>) =
+        transaction {
+            contracts.filter { !it.value.deprecated }.map { cover ->
+                CoverEntity.new {
+                    name = cover.value.name
+                    address = cover.key
+                    type = cover.value.type.name
+                    site = cover.value.site
+                    symbol = cover.value.symbol
+                    underlyingToken = cover.value.underlyingToken
+                    dateAdded = cover.value.dateAdded.time
+                    deprecated = cover.value.deprecated
+                    logo = cover.value.logo
+                } to cover.value.supportedChains
+            }
+        }
 
     override suspend fun getAllCovers(): List<Cover> = dbQuery {
         CoverEntity.all().map { it.toCover() }
@@ -64,6 +97,7 @@ class CoverServiceImpl : CoverService, KoinComponent {
             name = name,
             address = address,
             type = CoverType.valueOf(type),
+            logo = logo,
             supportedChains = supportedChains.map { Chain.valueOf(it.name) }
         )
 }
