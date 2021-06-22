@@ -8,7 +8,7 @@ window.swaggerSpec={
       "email" : "ooctogene@gmail.com"
     }
   },
-  "host" : "centurio-hm21.herokuapp.com",
+  "host" : "centurio-hm2021.herokuapp.com",
   "basePath" : "/",
   "tags" : [ {
     "name" : "cover",
