@@ -22,7 +22,8 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.17.1")
+    id("io.gitlab.arturbosch.detekt") version "1.17.1"
+    id("org.hidetake.swagger.generator") version "2.18.2"
     java
 }
 
@@ -54,6 +55,10 @@ val detektFormat by tasks.registering(Detekt::class) {
         html.enabled = false
         txt.enabled = false
     }
+}
+
+dependencies {
+    swaggerUI("org.webjars:swagger-ui:3.10.0")
 }
 
 val detektAll by tasks.registering(Detekt::class) {
@@ -106,4 +111,12 @@ project(":persistence") {}
 // Task for Heroku deployment
 tasks.create("stage") {
     dependsOn("centurio-restapi:installDist")
+}
+
+swaggerSources {
+    create("centurio") {
+        setInputFile(file(project(":centurio-restapi").projectDir.resolve("src/main/resources/centurio.yaml")))
+        ui.outputDir = file(project(":centurio-restapi").projectDir.resolve("src/main/resources/swagger"))
+        code.language = "html"
+    }
 }

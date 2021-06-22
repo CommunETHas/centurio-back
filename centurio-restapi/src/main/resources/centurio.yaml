@@ -5,7 +5,7 @@ info:
   title: "Centurio"
   contact:
     email: "ooctogene@gmail.com"
-host: "centurio-hm21.heroku.com"
+host: "centurio-hm21.herokuapp.com"
 basePath: "/"
 tags:
 - name: "cover"
