@@ -58,7 +58,7 @@ val detektFormat by tasks.registering(Detekt::class) {
 }
 
 dependencies {
-    swaggerUI("org.webjars:swagger-ui:3.10.0")
+    swaggerUI("org.webjars:swagger-ui:3.50.0")
 }
 
 val detektAll by tasks.registering(Detekt::class) {
