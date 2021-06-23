@@ -7,7 +7,7 @@ data class SimpleToken(
     val name: String,
     val address: String,
     val symbol: String,
-    val owner: String,
+    val owner: String? = null,
     val known: Boolean = false,
     val recommendedCovers: List<Cover> = emptyList()
 )

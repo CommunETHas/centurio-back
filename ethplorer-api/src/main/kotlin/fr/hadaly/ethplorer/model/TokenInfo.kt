@@ -49,7 +49,7 @@ data class TokenInfo(
     val lastUpdated: Long,
     val name: String,
     val symbol: String,
-    val owner: String, // Address
+    val owner: String? = null, // Address
     @Serializable(with = BigIntegerSerializer::class)
     val totalSupply: BigInteger
 )

@@ -114,3 +114,8 @@ swaggerSources {
         code.language = "html"
     }
 }
+
+tasks.withType<Detekt>().configureEach {
+    // Target version of the generated JVM bytecode. It is used for type resolution.
+    this.jvmTarget = "1.8"
+}
