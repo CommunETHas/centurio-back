@@ -2,12 +2,15 @@ package fr.hadaly.persistence.service
 
 import fr.hadaly.core.model.SimpleToken
 import fr.hadaly.core.service.TokenRepository
-import fr.hadaly.persistence.entity.*
+import fr.hadaly.persistence.entity.CoverEntity
+import fr.hadaly.persistence.entity.Covers
+import fr.hadaly.persistence.entity.TokenEntity
+import fr.hadaly.persistence.entity.Tokens
+import fr.hadaly.persistence.entity.TokensCovers
 import fr.hadaly.persistence.service.DatabaseFactory.dbQuery
 import fr.hadaly.persistence.toToken
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class TokenServiceImpl : TokenRepository {
     suspend fun getAllTokens(): List<TokenEntity> = dbQuery {

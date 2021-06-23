@@ -15,16 +15,23 @@ import java.util.NoSuchElementException
 class RecommandationEngine(
     private val ethplorerService: EthplorerService,
     private val tokenService: TokenRepository
-    ) {
+) {
     private val logger = LoggerFactory.getLogger("fr.hadaly.core.RecommandationEngine")
 
     suspend fun recommendFor(address: String): Recommandations {
         val walletInfo = ethplorerService.getWalletInfo(address)
         logger.info("Checking recommandation for $address with ${walletInfo.transactionCount} transactions.")
         val unsupportedTokens = walletInfo.tokens.mapNotNull { checkTokens(it) }
-        val recommandations = (walletInfo.tokens - unsupportedTokens).map { tokenService.getTokenByAddress(it.tokenInfo.address) }.flatMap {
-            it.recommendedCovers.map { cover -> Recommandation(cover, Reasoning(it.symbol, "Lorem ipsum my friend, Lorem Ipsum !")) }
-        }.toSet().toList()
+        val recommandations =
+            (walletInfo.tokens - unsupportedTokens).map { tokenService.getTokenByAddress(it.tokenInfo.address) }
+                .flatMap {
+                    it.recommendedCovers.map { cover ->
+                        Recommandation(
+                            cover,
+                            Reasoning(it.symbol, "Lorem ipsum my friend, Lorem Ipsum !")
+                        )
+                    }
+                }.toSet().toList()
         return Recommandations(
             recommandations.size,
             recommandations = recommandations,

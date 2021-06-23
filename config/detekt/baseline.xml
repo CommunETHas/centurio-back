@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues>
     <ID>MatchingDeclarationName:Cover.kt$Cover</ID>
+    <ID>SwallowedException:RecommandationEngine.kt$RecommandationEngine$catch (error: NoSuchElementException) { tokenService.addToken(token.toSimpleToken()) token }</ID>
   </ManuallySuppressedIssues>
   <CurrentIssues>
       <ID>ClassNaming:V1__create_widgets.kt$V1__create_widgets : BaseJavaMigration</ID>
