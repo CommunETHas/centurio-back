@@ -21,6 +21,10 @@ buildscript {
     }
 }
 
+dependencies {
+    swaggerUI("org.webjars:swagger-ui:3.50.0")
+}
+
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.17.1"
     id("org.hidetake.swagger.generator") version "2.18.2"
@@ -30,8 +34,8 @@ plugins {
 val analysisDir = file(projectDir)
 val baselineFile = file("$rootDir/config/detekt/baseline.xml")
 val configFile = file("$rootDir/config/detekt/detekt.yml")
-val statisticsConfigFile = file("$rootDir/config/detekt/statistics.yml")
 
+val statisticsConfigFile = file("$rootDir/config/detekt/statistics.yml")
 val kotlinFiles = "**/*.kt"
 val kotlinScriptFiles = "**/*.kts"
 val resourceFiles = "**/resources/**"
@@ -55,10 +59,6 @@ val detektFormat by tasks.registering(Detekt::class) {
         html.enabled = false
         txt.enabled = false
     }
-}
-
-dependencies {
-    swaggerUI("org.webjars:swagger-ui:3.50.0")
 }
 
 val detektAll by tasks.registering(Detekt::class) {
@@ -102,10 +102,6 @@ allprojects {
     }
 }
 
-// Task for Heroku deployment
-tasks.create("stage") {
-    dependsOn("centurio-restapi:installDist")
-}
 
 swaggerSources {
     create("centurio") {
@@ -113,6 +109,11 @@ swaggerSources {
         ui.outputDir = file(project(":centurio-restapi").projectDir.resolve("src/main/resources/swagger"))
         code.language = "html"
     }
+}
+
+// Task for Heroku deployment
+tasks.create("stage") {
+    dependsOn("centurio-restapi:installDist")
 }
 
 tasks.withType<Detekt>().configureEach {
