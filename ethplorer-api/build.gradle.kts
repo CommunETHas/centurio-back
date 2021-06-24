@@ -1,7 +1,7 @@
 val ktorVersion = "1.6.0"
 
 plugins {
-    kotlin("plugin.serialization") version "1.5.10"
+    kotlin("plugin.serialization") version "1.5.20"
 }
 
 dependencies {
