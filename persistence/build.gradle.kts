@@ -9,7 +9,7 @@ val hikariCpVersion: String by project
 val flywayVersion: String by project
 
 plugins {
-    kotlin("plugin.serialization") version "1.5.10"
+    kotlin("plugin.serialization") version "1.5.20"
 }
 
 dependencies {

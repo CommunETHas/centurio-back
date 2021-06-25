@@ -1,5 +1,6 @@
 package fr.hadaly
 
+import fr.hadaly.di.restApiModule
 import fr.hadaly.engine.di.engineModule
 import fr.hadaly.ethplorer.di.ethplorerApiModule
 import fr.hadaly.persistence.di.persistenceModule
@@ -13,10 +14,15 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fr.hadaly.util.JsonMapper
+import fr.hadaly.util.JwtConfig
 import fr.hadaly.web.cover
 import fr.hadaly.web.index
 import fr.hadaly.web.token
 import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.client.*
+import io.ktor.client.features.*
+import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
 import org.koin.logger.slf4jLogger
@@ -26,7 +32,6 @@ import org.koin.logger.slf4jLogger
 fun Application.module() {
     install(DefaultHeaders)
     install(CallLogging)
-    install(Authentication)
 
     install(ContentNegotiation) {
         json(JsonMapper.defaultMapper)
@@ -35,11 +40,22 @@ fun Application.module() {
     install(Koin) {
         slf4jLogger()
         modules(
+            restApiModule,
             nexusApiModule,
             ethplorerApiModule,
             persistenceModule,
             engineModule
         )
+    }
+
+    val jwtConfig: JwtConfig = get { parametersOf(environment.config) }
+
+    install(Authentication) {
+        jwt {
+            realm = environment.config.property("ktor.jwt.realm").getString()
+            verifier(jwtConfig.verifier)
+            validate { JWTPrincipal(it.payload) }
+        }
     }
 
     when {
@@ -53,14 +69,15 @@ fun Application.module() {
     }
 
     install(CORS) {
-        if (isDev)
+        if (isDev) {
             anyHost()
+        }
     }
 
     install(Routing) {
         index()
         cover(get(), get())
-        token(get(), get())
+        token(get())
     }
 
 }

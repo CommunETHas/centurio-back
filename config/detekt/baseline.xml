@@ -3,6 +3,7 @@
   <ManuallySuppressedIssues>
     <ID>MatchingDeclarationName:Cover.kt$Cover</ID>
     <ID>SwallowedException:RecommandationEngine.kt$RecommandationEngine$catch (error: NoSuchElementException) { tokenService.addToken(token.toSimpleToken()) token }</ID>
+    <ID>SwallowedException:TokenServiceImpl.kt$TokenServiceImpl$catch (error: ExposedSQLException) { exposedLogger.info("Cover ${recommandation.name} is already registered for ${tokenEntity.symbol} token") }</ID>
   </ManuallySuppressedIssues>
   <CurrentIssues>
       <ID>ClassNaming:V1__create_widgets.kt$V1__create_widgets : BaseJavaMigration</ID>

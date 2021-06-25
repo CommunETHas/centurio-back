@@ -1,5 +1,6 @@
 package fr.hadaly.ethplorer
 
+import arrow.core.Either
 import fr.hadaly.ethplorer.model.AddressInfo
 import fr.hadaly.ethplorer.model.TokenInfo
 import fr.hadaly.ethplorer.model.WalletInfo
@@ -20,19 +21,21 @@ class EthplorerServiceImpl : EthplorerService {
         }
     }
 
-    override suspend fun getWalletInfo(address: String): WalletInfo {
+    override suspend fun getWalletInfo(address: String): Either<Throwable, WalletInfo> {
         val url = "$baseUrl/getAddressInfo/$address"
-        val addressInfo = client.get<AddressInfo>(url) {
-            parameter("apiKey", "freekey")
+        return Either.catch {
+            client.get<AddressInfo>(url) {
+                parameter("apiKey", "freekey")
+            }.toWalletInfo()
         }
-        return addressInfo.toWalletInfo()
     }
 
-    override suspend fun getTokenInfo(address: String): TokenInfo {
+    override suspend fun getTokenInfo(address: String): Either<Throwable, TokenInfo> {
         val url = "$baseUrl/getTokenInfo/$address"
-        val tokenInfo = client.get<TokenInfo>(url) {
-            parameter("apiKey", "freekey")
+        return Either.catch {
+            client.get<TokenInfo>(url) {
+                parameter("apiKey", "freekey")
+            }
         }
-        return tokenInfo
     }
 }

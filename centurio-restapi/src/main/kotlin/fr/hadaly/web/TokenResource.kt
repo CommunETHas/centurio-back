@@ -1,7 +1,12 @@
 package fr.hadaly.web
 
+import ch.qos.logback.core.subst.Token
+import fr.hadaly.core.model.SimpleToken
 import fr.hadaly.core.service.CoverRepository
 import fr.hadaly.core.service.TokenRepository
+import fr.hadaly.engine.toSimpleToken
+import fr.hadaly.ethplorer.EthplorerService
+import fr.hadaly.handler.TokenRequestHandler
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -11,23 +16,20 @@ import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.routing.*
 import fr.hadaly.model.TokenRequest
+import io.ktor.auth.*
 
-fun Route.token(tokenRepository: TokenRepository, coverRepository: CoverRepository) {
+fun Route.token(tokenRequestHandler: TokenRequestHandler) {
 
     route("/token") {
 
-        post {
-            val tokenRequest = call.receive<TokenRequest>()
-            call.application.environment.log.info(tokenRequest.toString())
-
-            val token = tokenRepository.getTokenByAddress(tokenRequest.address)
-            val covers = tokenRequest.covers.map {
-                coverRepository.getCoverByAddress(it)
+        authenticate {
+            post {
+                val tokenRequest = call.receive<List<TokenRequest>>()
+                call.application.environment.log.info(tokenRequest.toString())
+                tokenRequestHandler.handle(tokenRequest)
+                call.respond(HttpStatusCode.Accepted, "Saved cover recommandations")
             }
-            val updatedToken = token.copy(recommendedCovers = covers)
-            tokenRepository.updateToken(updatedToken)
         }
-
     }
-
 }
+
