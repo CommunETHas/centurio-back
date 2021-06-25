@@ -9,7 +9,8 @@ val logbackVersion = "1.2.3"
 val assertjVersion = "3.19.0"
 val restAssuredVersion = "4.4.0"
 val junitVersion = "5.7.1"
-val koinVersion = "3.1.0"
+val koinVersion = "3.1.1"
+val arrowVersion = "0.13.2"
 
 buildscript {
     repositories {
@@ -17,7 +18,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
     }
 }
 
@@ -95,6 +96,7 @@ allprojects {
         implementation("io.insert-koin:koin-ktor:$koinVersion")
         implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
+        implementation("io.arrow-kt:arrow-core:$arrowVersion")
     }
 
     tasks.withType<Test> {
@@ -105,8 +107,9 @@ allprojects {
 
 swaggerSources {
     create("centurio") {
-        setInputFile(file(project(":centurio-restapi").projectDir.resolve("src/main/resources/centurio.yaml")))
-        ui.outputDir = file(project(":centurio-restapi").projectDir.resolve("src/main/resources/swagger"))
+        val restApiDir = project(":centurio-restapi").projectDir
+        setInputFile(file(restApiDir.resolve("src/main/resources/centurio.yaml")))
+        ui.outputDir = file(restApiDir.resolve("src/main/resources/swagger"))
         code.language = "html"
     }
 }

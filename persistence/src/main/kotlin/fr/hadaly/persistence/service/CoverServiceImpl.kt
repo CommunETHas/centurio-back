@@ -1,5 +1,6 @@
 package fr.hadaly.persistence.service
 
+import arrow.core.Either
 import fr.hadaly.persistence.entity.ChainEntity
 import fr.hadaly.persistence.entity.ChainsCovers
 import fr.hadaly.nexusapi.NexusMutalService
@@ -87,8 +88,10 @@ class CoverServiceImpl : CoverRepository, KoinComponent {
         CoverEntity[id].toCover()
     }
 
-    override suspend fun getCoverByAddress(address: String): Cover = dbQuery {
-        CoverEntity.find { Covers.address eq address }.first().toCover()
+    override suspend fun getCoverByAddress(address: String): Either<Throwable, Cover> = dbQuery {
+        Either.catch {
+            CoverEntity.find { Covers.address eq address }.first().toCover()
+        }
     }
 
     override suspend fun deleteCover(id: Int): Boolean {
