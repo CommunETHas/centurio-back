@@ -52,6 +52,9 @@ fun Application.module() {
         }
     }
 
+    install(CORS) {
+        anyHost()
+    }
 
     install(Routing) {
         index()
