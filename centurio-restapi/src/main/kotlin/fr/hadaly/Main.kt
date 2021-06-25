@@ -53,7 +53,8 @@ fun Application.module() {
     }
 
     install(CORS) {
-        anyHost()
+        if (envKind == "dev")
+            anyHost()
     }
 
     install(Routing) {
