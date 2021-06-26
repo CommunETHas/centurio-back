@@ -9,12 +9,14 @@ fun Token.toSimpleToken() = SimpleToken(
     name = tokenInfo.name,
     address = tokenInfo.address,
     owner = tokenInfo.owner,
-    symbol = tokenInfo.symbol
+    symbol = tokenInfo.symbol,
+    logoUrl = "/${tokenInfo.address}/logo.png"
 )
 
 fun TokenInfo.toSimpleToken() = SimpleToken(
     name = name,
     address = address,
     owner = owner,
-    symbol = symbol
+    symbol = symbol,
+    logoUrl = "/$address/logo.png"
 )

@@ -145,14 +145,19 @@ definitions:
         type: "object"
         $ref: "#/definitions/Cover"
       reasoning:
-        type: "object"
-        $ref: "#/definitions/Reasoning"
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/Reasoning"
   Reasoning:
     type: "object"
     properties:
       token:
         type: "string"
         description: "Token symbol"
+      logoUrl:
+        type: "string"
+        description: "Token logo url"
       description:
         type: "string"
         description: "Explaination"
