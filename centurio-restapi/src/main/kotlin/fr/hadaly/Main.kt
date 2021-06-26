@@ -71,12 +71,15 @@ fun Application.module() {
     install(CORS) {
         if (isDev) {
             anyHost()
+        } else {
+            val frontHost = environment.config.property("ktor.deployment.front_host").getString()
+            host(frontHost, schemes = listOf("https"))
         }
     }
 
     install(Routing) {
         index()
-        cover(get(), get())
+        cover(get(), get { parametersOf(storageUrl) })
         token(get())
     }
 
@@ -89,3 +92,4 @@ fun main(args: Array<String>) {
 val Application.envKind get() = environment.config.property("ktor.deployment.environment").getString()
 val Application.isDev get() = envKind == "dev"
 val Application.isProd get() = envKind != "dev"
+val Application.storageUrl get() = environment.config.property("ktor.deployment.storage").getString()

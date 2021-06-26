@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Recommandation(
     val cover: Cover,
-    val reasoning: Reasoning
+    val reasoning: List<Reasoning>
 )

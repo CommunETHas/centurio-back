@@ -1,6 +1,7 @@
 package fr.hadaly.core.model
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Required
 
 @Serializable
 data class SimpleToken(
@@ -9,5 +10,7 @@ data class SimpleToken(
     val symbol: String,
     val owner: String? = null,
     val known: Boolean = false,
-    val recommendedCovers: List<Cover> = emptyList()
+    val recommendedCovers: List<Cover> = emptyList(),
+    @Required
+    val logoUrl: String = "/$address/logo.png"
 )

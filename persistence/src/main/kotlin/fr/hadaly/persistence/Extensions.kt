@@ -14,7 +14,8 @@ fun TokenEntity.toToken(): SimpleToken =
         symbol = symbol,
         owner = owner,
         known = known,
-        recommendedCovers = recommendedCovers.map { it.toCover() }
+        recommendedCovers = recommendedCovers.map { it.toCover() },
+        logoUrl = "/$address/logo.png"
     )
 
 

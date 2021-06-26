@@ -178,8 +178,11 @@ window.swaggerSpec={
           "$ref" : "#/definitions/Cover"
         },
         "reasoning" : {
-          "type" : "object",
-          "$ref" : "#/definitions/Reasoning"
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "$ref" : "#/definitions/Reasoning"
+          }
         }
       }
     },
@@ -189,6 +192,10 @@ window.swaggerSpec={
         "token" : {
           "type" : "string",
           "description" : "Token symbol"
+        },
+        "logoUrl" : {
+          "type" : "string",
+          "description" : "Token logo url"
         },
         "description" : {
           "type" : "string",
