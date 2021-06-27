@@ -18,6 +18,7 @@ import fr.hadaly.util.JwtConfig
 import fr.hadaly.web.cover
 import fr.hadaly.web.index
 import fr.hadaly.web.token
+import fr.hadaly.web.user
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.client.*
@@ -81,6 +82,7 @@ fun Application.module() {
         index()
         cover(get(), get { parametersOf(storageUrl) })
         token(get())
+        user(get())
     }
 
 }

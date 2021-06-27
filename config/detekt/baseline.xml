@@ -6,7 +6,7 @@
     <ID>SwallowedException:TokenServiceImpl.kt$TokenServiceImpl$catch (error: ExposedSQLException) { exposedLogger.info("Cover ${recommandation.name} is already registered for ${tokenEntity.symbol} token") }</ID>
   </ManuallySuppressedIssues>
   <CurrentIssues>
-      <ID>ClassNaming:V1__create_widgets.kt$V1__create_widgets : BaseJavaMigration</ID>
+      <ID>ClassNaming:V1__create_tables.kt$V1__create_tables : BaseJavaMigration</ID>
       <ID>EmptyKtFile:settings.gradle.kts$.settings.gradle.kts</ID>
   </CurrentIssues>
 </SmellBaseline>
