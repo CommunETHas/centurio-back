@@ -1,5 +1,6 @@
 package fr.hadaly.handler
 
+import arrow.core.Either
 import fr.hadaly.core.model.User
 import org.web3j.crypto.ECDSASignature
 import org.web3j.crypto.Keys
@@ -13,7 +14,7 @@ import java.math.BigInteger
  */
 class AuthenticationRequestHandler {
 
-    fun verify(user: User, signature: String): Boolean {
+    fun verify(user: User, signature: String): Either<Throwable, Boolean> {
         val messageHash = Sign.getEthereumMessageHash(user.nonce.toByteArray())
         val signatureData = getSignatureData(user)
         var matchFound = false

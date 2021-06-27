@@ -1,5 +1,6 @@
 package fr.hadaly.di
 
+import fr.hadaly.handler.AuthenticationRequestHandler
 import fr.hadaly.handler.TokenRequestHandler
 import fr.hadaly.util.JwtConfig
 import io.ktor.application.*
@@ -16,4 +17,5 @@ val restApiModule = module {
             ethplorerService = get()
         )
     }
+    factory { AuthenticationRequestHandler() }
 }
