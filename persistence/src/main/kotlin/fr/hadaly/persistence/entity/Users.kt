@@ -6,9 +6,9 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Users: IntIdTable() {
-    val address = Tokens.varchar("address", 42).uniqueIndex()
-    val email = Tokens.varchar("email", 255)
-    val nonce = Tokens.varchar("nonce", 255)
+    val address = varchar("address", 42).uniqueIndex()
+    val email = varchar("email", 255)
+    val nonce = varchar("nonce", 255)
 }
 
 class UserEntity(id: EntityID<Int>): IntEntity(id) {

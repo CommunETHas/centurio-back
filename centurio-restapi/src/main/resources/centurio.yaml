@@ -65,6 +65,26 @@ paths:
             $ref: "#/definitions/Recommandations"
         "400":
           description: "Invalid Address supplied"
+  /user/{address}:
+    get:
+      tags:
+        - "user"
+      summary: "Get user"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "address"
+          in: "path"
+          description: "Address of a wallet"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "404":
+          description: "User not registered"
 definitions:
   Cover:
     type: "object"
@@ -161,4 +181,17 @@ definitions:
       description:
         type: "string"
         description: "Explaination"
+  User:
+    type: "object"
+    properties:
+      address:
+        type: "string"
+        description: "User address"
+      nonce:
+        type: "string"
+        description: "Nonce used for signature"
+      email:
+        type: "string"
+        description: "User's email"
+
 

@@ -15,11 +15,13 @@ import io.ktor.server.netty.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fr.hadaly.util.JsonMapper
 import fr.hadaly.util.JwtConfig
-import fr.hadaly.web.*
+import fr.hadaly.web.authentication
+import fr.hadaly.web.cover
+import fr.hadaly.web.index
+import fr.hadaly.web.user
+import fr.hadaly.web.token
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
-import io.ktor.client.*
-import io.ktor.client.features.*
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
@@ -80,9 +82,8 @@ fun Application.module() {
         cover(get(), get { parametersOf(storageUrl) })
         token(get())
         user(get())
-        authentication(get(), get())
+        authentication(get(), jwtConfig)
     }
-
 }
 
 fun main(args: Array<String>) {

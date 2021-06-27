@@ -6,6 +6,7 @@ import org.web3j.crypto.ECDSASignature
 import org.web3j.crypto.Keys
 import org.web3j.crypto.Sign
 import org.web3j.crypto.Sign.recoverFromSignature
+import org.web3j.utils.Numeric
 import java.math.BigInteger
 
 /**
@@ -14,11 +15,11 @@ import java.math.BigInteger
  */
 class AuthenticationRequestHandler {
 
-    fun verify(user: User, signature: String): Either<Throwable, Boolean> {
+    fun verify(user: User, signature: String): Either<Throwable, Boolean> = Either.catch {
         val messageHash = Sign.getEthereumMessageHash(user.nonce.toByteArray())
-        val signatureData = getSignatureData(user)
+        val signatureData = getSignatureData(signature)
         var matchFound = false
-        for(recId in 0 until 4) {
+        for (recId in 0 until 4) {
             val publicKey = recoverFromSignature(
                 recId,
                 ECDSASignature(BigInteger(1, signatureData.r), BigInteger(1, signatureData.s)),
@@ -33,11 +34,11 @@ class AuthenticationRequestHandler {
                 }
             }
         }
-        return matchFound
+        matchFound
     }
 
-    private fun getSignatureData(user: User): Sign.SignatureData {
-        val nonceBytes = user.nonce.toByteArray()
+    private fun getSignatureData(signature: String): Sign.SignatureData {
+        val nonceBytes = Numeric.hexStringToByteArray(signature)
         var v = nonceBytes[64]
         if (v < 27) {
             v = (v + 27).toByte()

@@ -1,6 +1,13 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues>
+    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$4</ID>
+    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$64</ID>
+    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$27</ID>
+    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$27</ID>
+    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$32</ID>
+    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$32</ID>
+    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$64</ID>
     <ID>MatchingDeclarationName:Cover.kt$Cover</ID>
     <ID>SwallowedException:RecommandationEngine.kt$RecommandationEngine$catch (error: NoSuchElementException) { tokenService.addToken(token.toSimpleToken()) token }</ID>
     <ID>SwallowedException:TokenServiceImpl.kt$TokenServiceImpl$catch (error: ExposedSQLException) { exposedLogger.info("Cover ${recommandation.name} is already registered for ${tokenEntity.symbol} token") }</ID>

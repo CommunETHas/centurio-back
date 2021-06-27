@@ -20,7 +20,7 @@ fun Route.authentication(authenticationRequestHandler: AuthenticationRequestHand
 
         post("/") {
             val authRequest = call.receive<AuthenticationRequest>()
-            when(val verification = authenticationRequestHandler.verify(authRequest.signature)) {
+            when(val verification = authenticationRequestHandler.verify(authRequest.user, authRequest.signature)) {
                 is Either.Left -> {
                     call.respond(HttpStatusCode.Unauthorized, "Authentication failed : ${verification.value.message}")
                 }
