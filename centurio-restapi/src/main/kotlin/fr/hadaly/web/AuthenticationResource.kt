@@ -19,7 +19,7 @@ fun Route.authentication(userRepository: UserRepository, jwtConfig: JwtConfig) {
 
         post("/") {
             val authRequest = call.receive<AuthenticationRequest>()
-            userRepository.addUser(User(address))
+            userRepository.addUser(User(authRequest.address))
             call.respond(jwtConfig.makeToken(authRequest.address))
         }
     }
