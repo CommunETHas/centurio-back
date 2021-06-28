@@ -78,6 +78,74 @@ window.swaggerSpec={
           }
         }
       }
+    },
+    "/user/{address}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get user",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "address",
+          "in" : "path",
+          "description" : "Address of a wallet",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "404" : {
+            "description" : "User not registered"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Create user",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "address",
+          "in" : "path",
+          "description" : "Address of a wallet",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User registered"
+          },
+          "404" : {
+            "description" : "User not registered"
+          }
+        }
+      }
+    },
+    "/authentication" : {
+      "post" : {
+        "tags" : [ "authentication" ],
+        "summary" : "Get JWT Token",
+        "produces" : [ "application/text" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "payload",
+          "description" : "The data needed to authentify",
+          "schema" : {
+            "$ref" : "#/definitions/AuthenticationRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Signature is not valid for the user"
+          }
+        }
+      }
     }
   },
   "definitions" : {
@@ -200,6 +268,36 @@ window.swaggerSpec={
         "description" : {
           "type" : "string",
           "description" : "Explaination"
+        }
+      }
+    },
+    "User" : {
+      "type" : "object",
+      "properties" : {
+        "address" : {
+          "type" : "string",
+          "description" : "User address"
+        },
+        "nonce" : {
+          "type" : "string",
+          "description" : "Nonce used for signature"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "User's email"
+        }
+      }
+    },
+    "AuthenticationRequest" : {
+      "type" : "object",
+      "properties" : {
+        "address" : {
+          "type" : "string",
+          "description" : "User address"
+        },
+        "signature" : {
+          "type" : "string",
+          "description" : "The result of the signature process"
         }
       }
     }
