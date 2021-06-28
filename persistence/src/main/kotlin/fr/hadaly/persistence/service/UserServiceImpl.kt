@@ -7,13 +7,18 @@ import fr.hadaly.persistence.entity.UserEntity
 import fr.hadaly.persistence.entity.Users
 import fr.hadaly.persistence.service.DatabaseFactory.dbQuery
 import fr.hadaly.persistence.toUser
+import org.slf4j.LoggerFactory
 
 class UserServiceImpl: UserRepository {
+    private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
+
     override suspend fun getUser(address: String): Either<Throwable, User> = dbQuery {
+        logger.info("Adding user $address")
         Either.catch { UserEntity.find { Users.address eq address }.first().toUser() }
     }
 
     override suspend fun addUser(user: User): Either<Throwable, User> = dbQuery {
+        logger.info("Adding user ${user.address}")
         Either.catch { UserEntity.new {
             address = user.address
             email = user.email
@@ -22,6 +27,7 @@ class UserServiceImpl: UserRepository {
     }
 
     override suspend fun updateUser(user: User): Either<Throwable, User> = dbQuery {
+        logger.info("Updating user ${user.address}")
         Either.catch {
             UserEntity.find { Users.address eq user.address }.first().apply {
                 address = user.address
