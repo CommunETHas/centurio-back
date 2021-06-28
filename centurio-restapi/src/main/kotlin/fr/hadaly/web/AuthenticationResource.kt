@@ -5,6 +5,7 @@ import fr.hadaly.core.model.User
 import fr.hadaly.core.model.toPublicUser
 import fr.hadaly.core.service.UserRepository
 import fr.hadaly.handler.AuthenticationRequestHandler
+import fr.hadaly.model.AccessToken
 import fr.hadaly.model.AuthenticationRequest
 import fr.hadaly.util.JwtConfig
 import io.ktor.application.*
@@ -26,7 +27,7 @@ fun Route.authentication(authenticationRequestHandler: AuthenticationRequestHand
                 }
                 is Either.Right -> {
                     if (verification.value) {
-                        call.respond(jwtConfig.makeToken(authRequest.user.address))
+                        call.respond(AccessToken(jwtConfig.makeToken(authRequest.user.address)))
                     } else {
                         call.respond(HttpStatusCode.Unauthorized, "Authentication failed")
                     }
