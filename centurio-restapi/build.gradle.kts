@@ -32,7 +32,9 @@ dependencies {
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-    implementation("org.web3j:core:4.8.4")
+    implementation("org.web3j:core:5.0.0")
+    implementation("org.web3j:crypto:5.0.0")
+    implementation("org.web3j:utils:5.0.0")
 
     testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
