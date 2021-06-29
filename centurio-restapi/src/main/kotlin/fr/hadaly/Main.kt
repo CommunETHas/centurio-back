@@ -22,6 +22,7 @@ import fr.hadaly.web.user
 import fr.hadaly.web.token
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
+import io.ktor.http.*
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
@@ -71,6 +72,9 @@ fun Application.module() {
     install(CORS) {
         if (isDev) {
             anyHost()
+            header(HttpHeaders.AccessControlAllowCredentials)
+            header(HttpHeaders.AccessControlAllowOrigin)
+            allowNonSimpleContentTypes = true
             allowCredentials = true
         } else {
             val frontHost = environment.config.property("ktor.deployment.front_host").getString()
