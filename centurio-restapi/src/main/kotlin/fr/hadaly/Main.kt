@@ -72,6 +72,9 @@ fun Application.module() {
     install(CORS) {
         if (isDev) {
             anyHost()
+            method(HttpMethod.Post)
+            method(HttpMethod.Put)
+            header(HttpHeaders.Authorization)
             header(HttpHeaders.AccessControlAllowCredentials)
             header(HttpHeaders.AccessControlAllowOrigin)
             allowNonSimpleContentTypes = true

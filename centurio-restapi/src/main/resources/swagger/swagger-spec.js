@@ -311,9 +311,10 @@ window.swaggerSpec={
     "AuthenticationRequest" : {
       "type" : "object",
       "properties" : {
-        "address" : {
-          "type" : "string",
-          "description" : "User address"
+        "user" : {
+          "type" : "object",
+          "$ref" : "#/definitions/User",
+          "description" : "User"
         },
         "signature" : {
           "type" : "string",
