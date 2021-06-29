@@ -71,6 +71,7 @@ fun Application.module() {
     install(CORS) {
         if (isDev) {
             anyHost()
+            allowCredentials = true
         } else {
             val frontHost = environment.config.property("ktor.deployment.front_host").getString()
             host(frontHost, schemes = listOf("https"))
