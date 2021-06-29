@@ -102,6 +102,8 @@ paths:
           description: "User registered"
         "404":
           description: "User not registered"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /authentication:
     post:
       tags:
@@ -237,3 +239,13 @@ definitions:
       signature:
         type: "string"
         description: "The result of the signature process"
+  ErrorResponse:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+        description: "The status code"
+      message:
+        type: "string"
+        description: "The error message"
+
