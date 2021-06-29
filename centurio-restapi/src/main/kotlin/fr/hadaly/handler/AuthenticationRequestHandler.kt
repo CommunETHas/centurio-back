@@ -14,9 +14,10 @@ import java.math.BigInteger
  * [ECRecoverTest](github.com/PlatONnetwork/client-sdk-java/crypto/src/test/java/com/platon/crypto/ECRecoverTest.java)
  */
 class AuthenticationRequestHandler {
+    private val prefixMessage = "Welcome to Centurio, sign this message to authenticate !"
 
     fun verify(user: User, signature: String): Either<Throwable, Boolean> = Either.catch {
-        val messageHash = org.web3j.crypto.Hash.sha3(signature.toByteArray())
+        val messageHash = org.web3j.crypto.Hash.sha3("$prefixMessage ${user.nonce}").toByteArray()
         val signatureData = getSignatureData(signature)
         var matchFound = false
         for (recId in 0 until 4) {
