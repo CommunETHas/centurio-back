@@ -32,6 +32,21 @@ fun Route.user(userRepository: UserRepository) {
             }
         }
 
+        authenticate {
+            get("/{address}") {
+                val address = call.parameters.getOrFail("address")
+                when (val user = userRepository.getUser(address)) {
+                    is Either.Left -> {
+                        val response = ErrorResponse(HttpStatusCode.NotFound.value, "User not registered.")
+                        call.respond(HttpStatusCode.NotFound, response)
+                    }
+                    is Either.Right -> {
+                        handleKnownUser(userRepository, user, false)
+                    }
+                }
+            }
+        }
+
         post("/{address}") {
             val address = call.parameters.getOrFail("address")
             when (val user = userRepository.addUser(User(address))) {
@@ -64,14 +79,19 @@ fun Route.user(userRepository: UserRepository) {
 
 private suspend fun PipelineContext<Unit, ApplicationCall>.handleKnownUser(
     userRepository: UserRepository,
-    user: Either.Right<User>
+    user: Either.Right<User>,
+    public: Boolean = true
 ) {
     when (val refreshedUser = userRepository.updateUser(user.value.copy(nonce = generateNonce()))) {
         is Either.Left -> {
             call.respond(HttpStatusCode.InternalServerError, refreshedUser.value.message.toString())
         }
         is Either.Right -> {
-            call.respond(refreshedUser.value.toPublicUser())
+            if (public) {
+                call.respond(refreshedUser.value.toPublicUser())
+            } else {
+                call.respond(refreshedUser.value)
+            }
         }
     }
 }

@@ -115,11 +115,31 @@ window.swaggerSpec={
           "type" : "string"
         } ],
         "responses" : {
-          "200" : {
+          "201" : {
             "description" : "User registered"
           },
           "404" : {
-            "description" : "User not registered"
+            "description" : "User not registered",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "Create user",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "address",
+          "in" : "path",
+          "description" : "Address of a wallet",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User updated"
           }
         }
       }
@@ -298,6 +318,19 @@ window.swaggerSpec={
         "signature" : {
           "type" : "string",
           "description" : "The result of the signature process"
+        }
+      }
+    },
+    "ErrorResponse" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "integer",
+          "description" : "The status code"
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "The error message"
         }
       }
     }
