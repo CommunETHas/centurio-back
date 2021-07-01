@@ -12,5 +12,5 @@ data class SimpleToken(
     val known: Boolean = false,
     val recommendedCovers: List<Cover> = emptyList(),
     @Required
-    val logoUrl: String = "/assets/$address/logo.png"
+    val logoUrl: String = "/asset/$address.png"
 )
