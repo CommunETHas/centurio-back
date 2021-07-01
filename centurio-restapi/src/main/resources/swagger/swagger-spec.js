@@ -144,6 +144,31 @@ window.swaggerSpec={
         }
       }
     },
+    "/user/private/{address}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get user in private form",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "address",
+          "in" : "path",
+          "description" : "Address of a wallet",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "404" : {
+            "description" : "User not registered"
+          }
+        }
+      }
+    },
     "/authentication" : {
       "post" : {
         "tags" : [ "authentication" ],
@@ -292,6 +317,19 @@ window.swaggerSpec={
       }
     },
     "User" : {
+      "type" : "object",
+      "properties" : {
+        "address" : {
+          "type" : "string",
+          "description" : "User address"
+        },
+        "nonce" : {
+          "type" : "string",
+          "description" : "Nonce used for signature"
+        }
+      }
+    },
+    "UserPrivate" : {
       "type" : "object",
       "properties" : {
         "address" : {

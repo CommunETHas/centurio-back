@@ -33,7 +33,7 @@ fun Route.user(userRepository: UserRepository) {
         }
 
         authenticate {
-            get("/{address}") {
+            get("/private/{address}") {
                 val address = call.parameters.getOrFail("address")
                 when (val user = userRepository.getUser(address)) {
                     is Either.Left -> {
@@ -63,6 +63,7 @@ fun Route.user(userRepository: UserRepository) {
 
         put {
             val user = call.receive<User>()
+            application.environment.log.info("Received user $user")
             when (val user = userRepository.updateUser(user)) {
                 is Either.Left -> {
                     val response =
@@ -87,6 +88,7 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleKnownUser(
             call.respond(HttpStatusCode.InternalServerError, refreshedUser.value.message.toString())
         }
         is Either.Right -> {
+            application.environment.log.info(refreshedUser.value.toString())
             if (public) {
                 call.respond(refreshedUser.value.toPublicUser())
             } else {

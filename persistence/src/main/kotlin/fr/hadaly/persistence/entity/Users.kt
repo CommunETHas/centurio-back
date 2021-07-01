@@ -7,7 +7,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Users: IntIdTable() {
     val address = varchar("address", 42).uniqueIndex()
-    val email = varchar("email", 255)
+    val email = varchar("email", 255).nullable()
     val nonce = varchar("nonce", 255)
 }
 

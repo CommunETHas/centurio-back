@@ -9,7 +9,7 @@ data class User(
     val address: String,
     val nonce: String = generateNonce(),
     @Required
-    val email: String = "",
+    val email: String? = null,
     val subscribed: Boolean = false
 )
 
