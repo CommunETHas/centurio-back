@@ -8,11 +8,10 @@ import kotlinx.serialization.Serializable
 data class User(
     val address: String,
     val nonce: String = generateNonce(),
-    @Required
     val email: String? = null,
     val subscribed: Boolean = false
 )
 
-fun User.toPublicUser() = this.copy(email = "")
+fun User.toPublicUser() = this.copy(email = null)
 
 
