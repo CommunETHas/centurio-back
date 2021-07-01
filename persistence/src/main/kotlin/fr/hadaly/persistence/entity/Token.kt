@@ -10,7 +10,7 @@ object Tokens : IntIdTable() {
     val name = varchar("name", 255)
     val address = varchar("address", 42)
     val owner = varchar("owner", 42).nullable()
-    val symbol = varchar("symbol", 8)
+    val symbol = varchar("symbol", 20)
     val known = bool("known").default(false)
     override val primaryKey = PrimaryKey(id)
 }
