@@ -9,7 +9,7 @@ val logbackVersion = "1.2.3"
 val assertjVersion = "3.19.0"
 val restAssuredVersion = "4.4.0"
 val junitVersion = "5.7.1"
-val koinVersion = "3.1.1"
+val koinVersion = "3.1.2"
 val arrowVersion = "0.13.2"
 
 buildscript {
