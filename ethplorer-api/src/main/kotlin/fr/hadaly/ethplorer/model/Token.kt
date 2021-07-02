@@ -8,6 +8,6 @@ import java.math.BigInteger
 data class Token(
     val balance: Double,
     @Serializable(with = BigIntegerSerializer::class)
-    val rawBalance: BigInteger,
+    val rawBalance: BigInteger? = null,
     val tokenInfo: TokenInfo
 )

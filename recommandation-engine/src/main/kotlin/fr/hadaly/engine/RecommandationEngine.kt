@@ -22,6 +22,7 @@ class RecommandationEngine(
         val walletInfo: Either<Throwable, WalletInfo> = ethplorerService.getWalletInfo(address)
         return when (walletInfo) {
             is Either.Left -> {
+                logger.error(walletInfo.value.message)
                 logger.error("Wallet $address is not a valid wallet.")
                 Either.Left(IllegalArgumentException("Address $address is not valid."))
             }
