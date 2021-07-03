@@ -1,9 +1,7 @@
 package fr.hadaly.persistence
 
-import fr.hadaly.core.model.Cover
-import fr.hadaly.core.model.ResourceUrl
-import fr.hadaly.core.model.SimpleToken
-import fr.hadaly.core.model.User
+import fr.hadaly.core.model.*
+import fr.hadaly.core.toSupportedChain
 import fr.hadaly.nexusapi.model.Chain
 import fr.hadaly.nexusapi.model.CoverType
 import fr.hadaly.persistence.entity.CoverEntity
@@ -28,7 +26,9 @@ fun CoverEntity.toCover() =
         address = address,
         type = CoverType.valueOf(type),
         logo = logo,
-        supportedChains = supportedChains.map { Chain.valueOf(it.name) }
+        supportedChains = supportedChains.map {
+            Chain.valueOf(it.name).toSupportedChain()
+        }
     )
 
 fun UserEntity.toUser() =

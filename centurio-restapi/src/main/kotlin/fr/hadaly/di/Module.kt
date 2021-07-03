@@ -1,14 +1,12 @@
 package fr.hadaly.di
 
-import fr.hadaly.core.model.SupportedChain
+import fr.hadaly.core.model.ChainNetwork
 import fr.hadaly.core.service.Configuration
 import fr.hadaly.handler.AuthenticationRequestHandler
 import fr.hadaly.handler.TokenRequestHandler
 import fr.hadaly.util.ConfigurationProvider
 import fr.hadaly.util.JwtConfig
-import io.ktor.application.*
 import io.ktor.config.*
-import io.ktor.server.engine.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -18,7 +16,7 @@ val restApiModule = module {
         TokenRequestHandler(
             tokenRepository = get(),
             coverRepository = get(),
-            ethplorerService = get(named("${SupportedChain.KOVAN}"))
+            ethplorerService = get(named("${ChainNetwork.KOVAN}"))
         )
     }
     factory { AuthenticationRequestHandler() }

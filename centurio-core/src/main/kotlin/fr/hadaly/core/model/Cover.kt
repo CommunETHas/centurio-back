@@ -10,7 +10,7 @@ data class Cover(
     val name: String,
     val address: String,
     val type: CoverType,
-    val supportedChains: List<Chain> = emptyList(),
+    val supportedChains: List<SupportedChain> = emptyList(),
     val logo: String? = null,
     @Serializable(with = ResourceUrlSerializer::class)
     val logoUrl: ResourceUrl = ResourceUrl("/cover/$logo"),

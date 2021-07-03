@@ -214,8 +214,7 @@ window.swaggerSpec={
           "type" : "array",
           "description" : "contract's chains supported",
           "items" : {
-            "type" : "string",
-            "enum" : [ "ethereum", "bsc", "fantom", "polygon", "starkware", "xdai", "terra", "thorchain" ]
+            "$ref" : "#/definitions/SupportedChains"
           }
         },
         "logo" : {
@@ -370,6 +369,19 @@ window.swaggerSpec={
         "message" : {
           "type" : "string",
           "description" : "The error message"
+        }
+      }
+    },
+    "SupportedChain" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "name of the chain"
+        },
+        "logoUrl" : {
+          "type" : "string",
+          "description" : "url to the logo"
         }
       }
     }
