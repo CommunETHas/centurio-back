@@ -74,7 +74,8 @@ class NotificationServiceImpl(
         return lastNotification?.let {
             val needsRefresh = when (frequency) {
                 Frequency.NEVER -> false
-                Frequency.DAILY -> DAYS.between(it, LocalDateTime.now()) == 1L
+//                Frequency.DAILY -> DAYS.between(it, LocalDateTime.now()) == 1L
+                Frequency.DAILY -> true
                 Frequency.WEEKLY -> DAYS.between(it, LocalDateTime.now()) == 7L
                 Frequency.MONTHLY -> MONTHS.between(it, LocalDateTime.now()) == 1L
             }
