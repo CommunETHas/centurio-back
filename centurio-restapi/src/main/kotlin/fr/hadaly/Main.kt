@@ -24,6 +24,7 @@ import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.http.*
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
 import org.koin.logger.slf4jLogger
@@ -88,7 +89,7 @@ fun Application.module() {
 
     install(Routing) {
         index()
-        cover(get(), get { parametersOf(storageUrl) })
+        cover(get(), get(named(network)) { parametersOf(storageUrl) })
         token(get())
         user(get())
         authentication(get(), jwtConfig)
@@ -103,3 +104,4 @@ val Application.envKind get() = environment.config.property("ktor.deployment.env
 val Application.isDev get() = envKind == "dev"
 val Application.isProd get() = envKind != "dev"
 val Application.storageUrl get() = environment.config.property("ktor.deployment.storage").getString()
+val Application.network get() = environment.config.property("ktor.deployment.network").getString()
