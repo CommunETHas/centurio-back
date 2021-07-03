@@ -1,11 +1,7 @@
 package fr.hadaly.engine
 
 import arrow.core.Either
-import fr.hadaly.core.model.Cover
-import fr.hadaly.core.model.Reasoning
-import fr.hadaly.core.model.Recommandation
-import fr.hadaly.core.model.Recommandations
-import fr.hadaly.core.model.SimpleToken
+import fr.hadaly.core.model.*
 import fr.hadaly.core.service.TokenRepository
 import fr.hadaly.ethplorer.EthplorerService
 import fr.hadaly.ethplorer.model.Token
@@ -72,7 +68,7 @@ class RecommandationEngine(
     ) =
         Reasoning(
             token.symbol,
-            token.logoUrl.value,
+            ResourceUrl(token.logoUrl.value),
             "Lorem ipsum my friend, Lorem Ipsum !"
         )
 

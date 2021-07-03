@@ -11,7 +11,7 @@ fun Token.toSimpleToken() = SimpleToken(
     address = tokenInfo.address,
     owner = tokenInfo.owner,
     symbol = tokenInfo.symbol,
-    logoUrl = ResourceUrl("/${tokenInfo.address}/logo.png")
+    logoUrl = ResourceUrl("/asset/${tokenInfo.address}.png")
 )
 
 fun TokenInfo.toSimpleToken() = SimpleToken(
@@ -19,5 +19,5 @@ fun TokenInfo.toSimpleToken() = SimpleToken(
     address = address,
     owner = owner,
     symbol = symbol,
-    logoUrl = ResourceUrl("/$address/logo.png")
+    logoUrl = ResourceUrl("/$address/")
 )
