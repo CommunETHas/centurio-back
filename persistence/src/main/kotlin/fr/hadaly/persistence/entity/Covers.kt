@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.Table
 
 object Covers : IntIdTable() {
     val name = varchar("name", 255)
-    val address = varchar("address", 255)
+    val address = varchar("address", 255).uniqueIndex()
     val type = varchar("type", 32)
     val site = varchar("site", 255).nullable()
     val symbol = varchar("symbol", 10).nullable()

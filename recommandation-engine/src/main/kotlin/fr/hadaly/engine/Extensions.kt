@@ -1,5 +1,6 @@
 package fr.hadaly.engine
 
+import fr.hadaly.core.model.ResourceUrl
 import fr.hadaly.core.model.SimpleToken
 import fr.hadaly.ethplorer.model.Token
 import fr.hadaly.ethplorer.model.TokenInfo
@@ -10,7 +11,7 @@ fun Token.toSimpleToken() = SimpleToken(
     address = tokenInfo.address,
     owner = tokenInfo.owner,
     symbol = tokenInfo.symbol,
-    logoUrl = "/${tokenInfo.address}/logo.png"
+    logoUrl = ResourceUrl("/asset/${tokenInfo.address}.png")
 )
 
 fun TokenInfo.toSimpleToken() = SimpleToken(
@@ -18,5 +19,5 @@ fun TokenInfo.toSimpleToken() = SimpleToken(
     address = address,
     owner = owner,
     symbol = symbol,
-    logoUrl = "/$address/logo.png"
+    logoUrl = ResourceUrl("/$address/")
 )

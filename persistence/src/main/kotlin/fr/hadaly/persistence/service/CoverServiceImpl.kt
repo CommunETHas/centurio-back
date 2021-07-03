@@ -68,7 +68,7 @@ class CoverServiceImpl : CoverRepository, KoinComponent {
             contracts.filter { !it.value.deprecated }.map { cover ->
                 CoverEntity.new {
                     name = cover.value.name
-                    address = cover.key
+                    address = cover.key.lowercase()
                     type = cover.value.type.name
                     site = cover.value.site
                     symbol = cover.value.symbol
@@ -90,7 +90,7 @@ class CoverServiceImpl : CoverRepository, KoinComponent {
 
     override suspend fun getCoverByAddress(address: String): Either<Throwable, Cover> = dbQuery {
         Either.catch {
-            CoverEntity.find { Covers.address eq address }.first().toCover()
+            CoverEntity.find { Covers.address eq address.lowercase() }.first().toCover()
         }
     }
 

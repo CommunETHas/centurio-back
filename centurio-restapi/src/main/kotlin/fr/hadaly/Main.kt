@@ -15,14 +15,16 @@ import io.ktor.server.netty.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fr.hadaly.util.JsonMapper
 import fr.hadaly.util.JwtConfig
+import fr.hadaly.web.authentication
 import fr.hadaly.web.cover
 import fr.hadaly.web.index
+import fr.hadaly.web.user
 import fr.hadaly.web.token
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
-import io.ktor.client.*
-import io.ktor.client.features.*
+import io.ktor.http.*
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
 import org.koin.logger.slf4jLogger
@@ -40,6 +42,7 @@ fun Application.module() {
     install(Koin) {
         slf4jLogger()
         modules(
+            org.koin.dsl.module { single { environment.config } },
             restApiModule,
             nexusApiModule,
             ethplorerApiModule,
@@ -71,6 +74,13 @@ fun Application.module() {
     install(CORS) {
         if (isDev) {
             anyHost()
+            method(HttpMethod.Post)
+            method(HttpMethod.Put)
+            header(HttpHeaders.Authorization)
+            header(HttpHeaders.AccessControlAllowCredentials)
+            header(HttpHeaders.AccessControlAllowOrigin)
+            allowNonSimpleContentTypes = true
+            allowCredentials = true
         } else {
             val frontHost = environment.config.property("ktor.deployment.front_host").getString()
             host(frontHost, schemes = listOf("https"))
@@ -79,10 +89,11 @@ fun Application.module() {
 
     install(Routing) {
         index()
-        cover(get(), get { parametersOf(storageUrl) })
+        cover(get(), get(named(network)) { parametersOf(storageUrl) })
         token(get())
+        user(get())
+        authentication(get(), jwtConfig)
     }
-
 }
 
 fun main(args: Array<String>) {
@@ -93,3 +104,4 @@ val Application.envKind get() = environment.config.property("ktor.deployment.env
 val Application.isDev get() = envKind == "dev"
 val Application.isProd get() = envKind != "dev"
 val Application.storageUrl get() = environment.config.property("ktor.deployment.storage").getString()
+val Application.network get() = environment.config.property("ktor.deployment.network").getString()

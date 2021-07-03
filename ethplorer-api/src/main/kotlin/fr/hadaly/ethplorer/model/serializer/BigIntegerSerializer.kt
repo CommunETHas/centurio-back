@@ -1,5 +1,6 @@
 package fr.hadaly.ethplorer.model.serializer
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -8,6 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.math.BigInteger
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializer(forClass = BigInteger::class)
 class BigIntegerSerializer {
     override val descriptor: SerialDescriptor

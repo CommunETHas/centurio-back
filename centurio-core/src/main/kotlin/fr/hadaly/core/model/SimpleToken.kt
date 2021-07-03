@@ -1,5 +1,6 @@
 package fr.hadaly.core.model
 
+import fr.hadaly.core.ResourceUrlSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Required
 
@@ -12,5 +13,6 @@ data class SimpleToken(
     val known: Boolean = false,
     val recommendedCovers: List<Cover> = emptyList(),
     @Required
-    val logoUrl: String = "/$address/logo.png"
+    @Serializable(with = ResourceUrlSerializer::class)
+    val logoUrl: ResourceUrl = ResourceUrl("/asset/$address.png")
 )
