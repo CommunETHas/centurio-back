@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory
 class UserServiceImpl: UserRepository {
     private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
+    override suspend fun getUsers(): List<User> {
+        return UserEntity.find { Users.email.isNotNull() }.map { it.toUser() }
+    }
+
     override suspend fun getUser(address: String): Either<Throwable, User> = dbQuery {
         logger.info("Adding user $address")
         Either.catch { UserEntity.find { Users.address eq address.lowercase() }.first().toUser() }
@@ -33,6 +37,7 @@ class UserServiceImpl: UserRepository {
                 address = user.address.lowercase()
                 email = user.email
                 nonce = user.nonce
+                frequency = user.frequency ?: "never"
             }.toUser()
         }
     }

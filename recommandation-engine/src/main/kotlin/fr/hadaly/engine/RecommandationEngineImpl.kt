@@ -7,19 +7,20 @@ import fr.hadaly.core.model.Cover
 import fr.hadaly.core.model.Reasoning
 import fr.hadaly.core.model.SimpleToken
 import fr.hadaly.core.model.ResourceUrl
+import fr.hadaly.core.service.RecommandationEngine
 import fr.hadaly.core.service.TokenRepository
 import fr.hadaly.ethplorer.EthplorerService
 import fr.hadaly.ethplorer.model.Token
 import fr.hadaly.ethplorer.model.WalletInfo
 import org.slf4j.LoggerFactory
 
-class RecommandationEngine(
+class RecommandationEngineImpl(
     private val ethplorerService: EthplorerService,
     private val tokenService: TokenRepository
-) {
+) : RecommandationEngine {
     private val logger = LoggerFactory.getLogger("fr.hadaly.core.RecommandationEngine")
 
-    suspend fun recommendFor(address: String): Either<Throwable, Recommandations> {
+    override suspend fun recommendFor(address: String): Either<Throwable, Recommandations> {
         val walletInfo: Either<Throwable, WalletInfo> = ethplorerService.getWalletInfo(address)
         return when (walletInfo) {
             is Either.Left -> {

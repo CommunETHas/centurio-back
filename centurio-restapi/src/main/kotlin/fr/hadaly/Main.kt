@@ -5,6 +5,7 @@ import fr.hadaly.engine.di.engineModule
 import fr.hadaly.ethplorer.di.ethplorerApiModule
 import fr.hadaly.persistence.di.persistenceModule
 import fr.hadaly.nexusapi.di.nexusApiModule
+import fr.hadaly.notification.di.notificationModule
 import fr.hadaly.persistence.service.DatabaseFactory
 import io.ktor.application.*
 import io.ktor.features.*
@@ -15,14 +16,11 @@ import io.ktor.server.netty.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fr.hadaly.util.JsonMapper
 import fr.hadaly.util.JwtConfig
-import fr.hadaly.web.authentication
-import fr.hadaly.web.cover
-import fr.hadaly.web.index
-import fr.hadaly.web.user
-import fr.hadaly.web.token
+import fr.hadaly.web.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.http.*
+import org.koin.dsl.module
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.ktor.ext.Koin
@@ -42,12 +40,13 @@ fun Application.module() {
     install(Koin) {
         slf4jLogger()
         modules(
-            org.koin.dsl.module { single { environment.config } },
+            module { single { environment.config } },
             restApiModule,
             nexusApiModule,
             ethplorerApiModule,
             persistenceModule,
-            engineModule
+            engineModule,
+            notificationModule
         )
     }
 
@@ -93,6 +92,7 @@ fun Application.module() {
         token(get())
         user(get())
         authentication(get(), jwtConfig)
+        admin(get { parametersOf(network) })
     }
 }
 

@@ -21,6 +21,7 @@ dependencies {
     implementation(project(":persistence"))
     implementation(project(":recommandation-engine"))
     implementation(project(":centurio-core"))
+    implementation(project(":notification"))
 
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")

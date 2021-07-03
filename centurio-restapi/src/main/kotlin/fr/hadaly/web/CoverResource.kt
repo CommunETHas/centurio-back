@@ -2,7 +2,7 @@ package fr.hadaly.web
 
 import arrow.core.Either
 import fr.hadaly.core.service.CoverRepository
-import fr.hadaly.engine.RecommandationEngine
+import fr.hadaly.core.service.RecommandationEngine
 import fr.hadaly.persistence.service.CoverService
 import io.ktor.application.*
 import io.ktor.response.*

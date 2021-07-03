@@ -4,8 +4,8 @@ info:
   version: "1.0.0"
   title: "Centurio"
   contact:
-    email: "ooctogene@gmail.com"
-host: "centurio-hm2021.herokuapp.com"
+    email: "team@centurio.app"
+host: "api.centurio.app"
 basePath: "/"
 tags:
   - name: "cover"
@@ -293,4 +293,3 @@ definitions:
       logoUrl:
         type: "string"
         description: "url to the logo"
-

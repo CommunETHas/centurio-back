@@ -45,6 +45,21 @@ fun Route.user(userRepository: UserRepository) {
                     }
                 }
             }
+
+            put {
+                val user = call.receive<User>()
+                application.environment.log.info("Received user $user")
+                when (val user = userRepository.updateUser(user)) {
+                    is Either.Left -> {
+                        val response =
+                            ErrorResponse(HttpStatusCode.InternalServerError.value, user.value.message.toString())
+                        call.respond(HttpStatusCode.InternalServerError, response)
+                    }
+                    is Either.Right -> {
+                        call.respond(HttpStatusCode.Accepted, "User updated")
+                    }
+                }
+            }
         }
 
         post("/{address}") {
@@ -57,21 +72,6 @@ fun Route.user(userRepository: UserRepository) {
                 }
                 is Either.Right -> {
                     call.respond(HttpStatusCode.Created, "User registered")
-                }
-            }
-        }
-
-        put {
-            val user = call.receive<User>()
-            application.environment.log.info("Received user $user")
-            when (val user = userRepository.updateUser(user)) {
-                is Either.Left -> {
-                    val response =
-                        ErrorResponse(HttpStatusCode.InternalServerError.value, user.value.message.toString())
-                    call.respond(HttpStatusCode.InternalServerError, response)
-                }
-                is Either.Right -> {
-                    call.respond(HttpStatusCode.Accepted, "User updated")
                 }
             }
         }
