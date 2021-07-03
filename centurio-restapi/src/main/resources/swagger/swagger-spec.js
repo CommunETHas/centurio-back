@@ -214,7 +214,7 @@ window.swaggerSpec={
           "type" : "array",
           "description" : "contract's chains supported",
           "items" : {
-            "$ref" : "#/definitions/SupportedChains"
+            "$ref" : "#/definitions/SupportedChain"
           }
         },
         "logo" : {
