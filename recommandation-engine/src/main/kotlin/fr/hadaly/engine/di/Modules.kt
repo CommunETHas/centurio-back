@@ -7,7 +7,17 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val engineModule = module {
-    single<RecommandationEngine>(named("kovan")) { RecommandationEngineImpl(get(named("${ChainNetwork.KOVAN}")), get()) }
-    single<RecommandationEngine>(named("mainnet")) { RecommandationEngineImpl(get(named("${ChainNetwork.MAINNET}")), get()) }
+    single<RecommandationEngine>(named("kovan")) {
+        RecommandationEngineImpl(
+            ethplorerService = get(named("${ChainNetwork.KOVAN}")),
+            tokenService = get()
+        )
+    }
+    single<RecommandationEngine>(named("mainnet")) {
+        RecommandationEngineImpl(
+            ethplorerService = get(named("${ChainNetwork.MAINNET}")),
+            tokenService = get()
+        )
+    }
 }
 
