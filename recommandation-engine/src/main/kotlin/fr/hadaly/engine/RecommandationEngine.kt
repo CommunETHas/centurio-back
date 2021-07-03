@@ -27,8 +27,8 @@ class RecommandationEngine(
                     "Checking recommandation for $address " +
                             "with ${walletInfo.value.transactionCount} transactions."
                 )
-                val unsupportedTokens = walletInfo.value.tokens.mapNotNull { checkTokens(it) }
-                val recommandations = handleTokens((walletInfo.value.tokens - unsupportedTokens))
+                val unsupportedTokens = walletInfo.value.tokens.mapNotNull { checkTokens(it) }.sortedBy { it.tokenInfo.name }
+                val recommandations = handleTokens((walletInfo.value.tokens - unsupportedTokens)).sortedBy { it.cover.name }
                 Either.Right(Recommandations(
                     recommandations.size,
                     recommandations = recommandations,
