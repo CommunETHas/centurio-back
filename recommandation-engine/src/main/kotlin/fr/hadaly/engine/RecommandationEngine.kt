@@ -1,7 +1,12 @@
 package fr.hadaly.engine
 
 import arrow.core.Either
-import fr.hadaly.core.model.*
+import fr.hadaly.core.model.Recommandations
+import fr.hadaly.core.model.Recommandation
+import fr.hadaly.core.model.Cover
+import fr.hadaly.core.model.Reasoning
+import fr.hadaly.core.model.SimpleToken
+import fr.hadaly.core.model.ResourceUrl
 import fr.hadaly.core.service.TokenRepository
 import fr.hadaly.ethplorer.EthplorerService
 import fr.hadaly.ethplorer.model.Token
@@ -27,8 +32,10 @@ class RecommandationEngine(
                     "Checking recommandation for $address " +
                             "with ${walletInfo.value.transactionCount} transactions."
                 )
-                val unsupportedTokens = walletInfo.value.tokens.mapNotNull { checkTokens(it) }.sortedBy { it.tokenInfo.name }
-                val recommandations = handleTokens((walletInfo.value.tokens - unsupportedTokens)).sortedBy { it.cover.name }
+                val unsupportedTokens =
+                    walletInfo.value.tokens.mapNotNull { checkTokens(it) }.sortedBy { it.tokenInfo.name }
+                val recommandations =
+                    handleTokens((walletInfo.value.tokens - unsupportedTokens)).sortedBy { it.cover.name }
                 Either.Right(Recommandations(
                     recommandations.size,
                     recommandations = recommandations,

@@ -1,6 +1,9 @@
 package fr.hadaly.persistence
 
-import fr.hadaly.core.model.*
+import fr.hadaly.core.model.Cover
+import fr.hadaly.core.model.ResourceUrl
+import fr.hadaly.core.model.SimpleToken
+import fr.hadaly.core.model.User
 import fr.hadaly.core.toSupportedChain
 import fr.hadaly.nexusapi.model.Chain
 import fr.hadaly.nexusapi.model.CoverType
