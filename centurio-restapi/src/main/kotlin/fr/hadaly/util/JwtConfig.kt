@@ -38,7 +38,7 @@ class JwtConfig(config: ApplicationConfig) {
     fun makeApiToken(login: String): String = JWT.create()
         .withSubject("Authentication")
         .withIssuer(issuer)
-        .withClaim("login", login)
+        .withClaim("admin", login)
         .sign(algorithm)
 
     /**
