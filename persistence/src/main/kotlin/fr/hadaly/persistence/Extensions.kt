@@ -1,6 +1,7 @@
 package fr.hadaly.persistence
 
 import fr.hadaly.core.model.Cover
+import fr.hadaly.core.model.ResourceUrl
 import fr.hadaly.core.model.SimpleToken
 import fr.hadaly.core.model.User
 import fr.hadaly.nexusapi.model.Chain
@@ -17,7 +18,7 @@ fun TokenEntity.toToken(): SimpleToken =
         owner = owner,
         known = known,
         recommendedCovers = recommendedCovers.map { it.toCover() },
-        logoUrl = "/$address/logo.png"
+        logoUrl = ResourceUrl("asset/$address.png")
     )
 
 

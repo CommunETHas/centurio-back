@@ -14,13 +14,13 @@ class UserServiceImpl: UserRepository {
 
     override suspend fun getUser(address: String): Either<Throwable, User> = dbQuery {
         logger.info("Adding user $address")
-        Either.catch { UserEntity.find { Users.address eq address }.first().toUser() }
+        Either.catch { UserEntity.find { Users.address eq address.lowercase() }.first().toUser() }
     }
 
     override suspend fun addUser(user: User): Either<Throwable, User> = dbQuery {
         logger.info("Adding user ${user.address}")
         Either.catch { UserEntity.new {
-            address = user.address
+            address = user.address.lowercase()
             email = user.email
             nonce = user.nonce
         }.toUser() }
@@ -29,8 +29,8 @@ class UserServiceImpl: UserRepository {
     override suspend fun updateUser(user: User): Either<Throwable, User> = dbQuery {
         logger.info("Updating user ${user.address}")
         Either.catch {
-            UserEntity.find { Users.address eq user.address }.first().apply {
-                address = user.address
+            UserEntity.find { Users.address eq user.address.lowercase() }.first().apply {
+                address = user.address.lowercase()
                 email = user.email
                 nonce = user.nonce
             }.toUser()

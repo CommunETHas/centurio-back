@@ -1,8 +1,10 @@
 package fr.hadaly.di
 
 import fr.hadaly.core.model.SupportedChain
+import fr.hadaly.core.service.Configuration
 import fr.hadaly.handler.AuthenticationRequestHandler
 import fr.hadaly.handler.TokenRequestHandler
+import fr.hadaly.util.ConfigurationProvider
 import fr.hadaly.util.JwtConfig
 import io.ktor.application.*
 import io.ktor.config.*
@@ -20,4 +22,5 @@ val restApiModule = module {
         )
     }
     factory { AuthenticationRequestHandler() }
+    single<Configuration> { ConfigurationProvider(get()) }
 }

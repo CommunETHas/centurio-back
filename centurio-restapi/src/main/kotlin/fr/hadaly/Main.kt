@@ -41,6 +41,7 @@ fun Application.module() {
     install(Koin) {
         slf4jLogger()
         modules(
+            org.koin.dsl.module { single { environment.config } },
             restApiModule,
             nexusApiModule,
             ethplorerApiModule,

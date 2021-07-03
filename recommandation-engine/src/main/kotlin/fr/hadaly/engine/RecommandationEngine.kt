@@ -72,7 +72,7 @@ class RecommandationEngine(
     ) =
         Reasoning(
             token.symbol,
-            token.logoUrl,
+            token.logoUrl.value,
             "Lorem ipsum my friend, Lorem Ipsum !"
         )
 
