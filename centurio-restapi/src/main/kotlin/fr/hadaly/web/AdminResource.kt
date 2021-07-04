@@ -5,7 +5,7 @@ import io.ktor.auth.*
 import io.ktor.routing.*
 
 fun Route.admin(notificationService: NotificationService) {
-    authenticate {
+    authenticate("admin") {
         route("/admin") {
             get("/notify-job") {
                 notificationService.processNotifications()

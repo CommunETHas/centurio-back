@@ -32,7 +32,7 @@ fun Route.user(userRepository: UserRepository) {
             }
         }
 
-        authenticate {
+        authenticate("user") {
             get("/private/{address}") {
                 val address = call.parameters.getOrFail("address")
                 when (val user = userRepository.getUser(address)) {

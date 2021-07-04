@@ -21,8 +21,7 @@ import io.ktor.auth.*
 fun Route.token(tokenRequestHandler: TokenRequestHandler) {
 
     route("/token") {
-
-        authenticate {
+        authenticate("admin") {
             post {
                 val tokenRequest = call.receive<List<TokenRequest>>()
                 call.application.environment.log.info(tokenRequest.toString())

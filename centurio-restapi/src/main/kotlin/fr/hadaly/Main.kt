@@ -58,10 +58,27 @@ fun Application.module() {
     val jwtConfig: JwtConfig = get { parametersOf(environment.config) }
 
     install(Authentication) {
-        jwt {
+        jwt("user") {
             realm = environment.config.property("ktor.jwt.realm").getString()
-            verifier(jwtConfig.verifier)
-            validate { JWTPrincipal(it.payload) }
+            verifier(jwtConfig.userVerifier)
+            validate { credentials ->
+                if (jwtConfig.isUserToken(credentials.audience)) {
+                    JWTPrincipal(credentials.payload)
+                } else {
+                    null
+                }
+            }
+        }
+        jwt("admin") {
+            realm = environment.config.property("ktor.jwt.realm").getString()
+            verifier(jwtConfig.adminVerifier)
+            validate { credentials ->
+                if (jwtConfig.isApiToken(credentials.audience)) {
+                    JWTPrincipal(credentials.payload)
+                } else {
+                    null
+                }
+            }
         }
     }
 
