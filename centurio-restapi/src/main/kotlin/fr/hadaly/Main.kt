@@ -3,6 +3,7 @@ package fr.hadaly
 import fr.hadaly.di.restApiModule
 import fr.hadaly.engine.di.engineModule
 import fr.hadaly.ethplorer.di.ethplorerApiModule
+import fr.hadaly.module.authenticationModule
 import fr.hadaly.nexusapi.di.nexusApiModule
 import fr.hadaly.notification.di.notificationModule
 import fr.hadaly.persistence.di.persistenceModule
@@ -56,31 +57,7 @@ fun Application.module() {
     }
 
     val jwtConfig: JwtConfig = get { parametersOf(environment.config) }
-
-    install(Authentication) {
-        jwt("user") {
-            realm = environment.config.property("ktor.jwt.realm").getString()
-            verifier(jwtConfig.userVerifier)
-            validate { credentials ->
-                if (jwtConfig.isUserToken(credentials.audience)) {
-                    JWTPrincipal(credentials.payload)
-                } else {
-                    null
-                }
-            }
-        }
-        jwt("admin") {
-            realm = environment.config.property("ktor.jwt.realm").getString()
-            verifier(jwtConfig.adminVerifier)
-            validate { credentials ->
-                if (jwtConfig.isApiToken(credentials.audience)) {
-                    JWTPrincipal(credentials.payload)
-                } else {
-                    null
-                }
-            }
-        }
-    }
+    authenticationModule(jwtConfig)
 
     when {
         isDev -> {
