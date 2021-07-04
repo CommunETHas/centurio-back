@@ -10,15 +10,19 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import org.slf4j.LoggerFactory
 
 class EthplorerServiceImpl(
     chain: String = "MAINNET"
 ) : EthplorerService {
+    private val logger = LoggerFactory.getLogger(EthplorerServiceImpl::class.java)
 
     private val baseUrl: String = when(chain) {
         "MAINNET" -> "http://api.ethplorer.io"
         "KOVAN" -> "http://kovan-api.ethplorer.io"
         else -> throw IllegalArgumentException("$chain is not supported yet.")
+    }.also {
+        logger.info("Using $it Ethplorer API")
     }
 
     private val client = HttpClient {

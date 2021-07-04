@@ -12,11 +12,11 @@ import org.koin.dsl.module
 
 val restApiModule = module {
     factory { (config: ApplicationConfig) -> JwtConfig(config) }
-    factory {
+    factory { (network: String) ->
         TokenRequestHandler(
             tokenRepository = get(),
             coverRepository = get(),
-            ethplorerService = get(named("${ChainNetwork.KOVAN}"))
+            ethplorerService = get(named(network.uppercase()))
         )
     }
     factory { AuthenticationRequestHandler() }

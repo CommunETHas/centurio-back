@@ -88,7 +88,7 @@ fun Application.module() {
     install(Routing) {
         index()
         cover(get(), get(named(network)) { parametersOf(storageUrl) })
-        token(get())
+        token(get { parametersOf(network) })
         user(get())
         authentication(get(), jwtConfig)
         admin(get { parametersOf(network) })
