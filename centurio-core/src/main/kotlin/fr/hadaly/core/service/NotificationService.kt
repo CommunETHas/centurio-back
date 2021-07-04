@@ -1,7 +1,7 @@
 package fr.hadaly.core.service
 
-import fr.hadaly.core.model.Recommandations
+import arrow.core.Either
 
 interface NotificationService {
-    suspend fun processNotifications()
+    suspend fun processNotifications(): Either<Throwable, Unit>
 }

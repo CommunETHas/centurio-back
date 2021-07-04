@@ -5,7 +5,7 @@ import fr.hadaly.core.model.Recommandations
 import fr.hadaly.core.model.User
 import fr.hadaly.core.service.Configuration
 import fr.hadaly.core.service.NotificationService
-import fr.hadaly.core.service.RecommandationEngine
+import fr.hadaly.core.service.RecommendationEngine
 import fr.hadaly.core.service.UserRepository
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -25,7 +25,7 @@ import java.time.temporal.ChronoUnit.DAYS
 class NotificationServiceImpl(
     config: Configuration,
     private val userRepository: UserRepository,
-    private val recommandationEngine: RecommandationEngine
+    private val recommendationEngine: RecommendationEngine
 ) : NotificationService {
     private val logger = LoggerFactory.getLogger(NotificationServiceImpl::class.java)
     private val baseUrl = config.getString("ktor.deployment.sendmail")
@@ -33,23 +33,25 @@ class NotificationServiceImpl(
         serializer<Serializer>()
     }
 
-    override suspend fun processNotifications() = withContext(Dispatchers.IO) {
-        val users = userRepository.getUsers()
-        users.forEach { user ->
-            user.frequency?.let {
-                val frequency = Frequency.valueOf(it.uppercase())
-                if (needsNotification(frequency, user.notifiedAt)) {
-                    launch {
-                        when (val recommandations = recommandationEngine.recommendFor(user.address)) {
-                            is Either.Left -> {
-                                logger.error(
-                                    "Fetching recommandations for ${user.address} " +
-                                        "failed : ${recommandations.value.message}"
-                                )
-                            }
-                            is Either.Right -> {
-                                sendMail(user, recommandations.value)
-                                userRepository.updateUser(user.copy(notifiedAt = LocalDateTime.now()))
+    override suspend fun processNotifications(): Either<Throwable, Unit> = withContext(Dispatchers.IO) {
+        Either.catch {
+            val users = userRepository.getUsers()
+            users.forEach { user ->
+                user.frequency?.let {
+                    val frequency = Frequency.valueOf(it.uppercase())
+                    if (needsNotification(frequency, user.notifiedAt)) {
+                        launch {
+                            when (val recommendations = recommendationEngine.recommendFor(user.address)) {
+                                is Either.Left -> {
+                                    logger.error(
+                                        "Fetching recommendations for ${user.address} " +
+                                                "failed : ${recommendations.value.message}"
+                                    )
+                                }
+                                is Either.Right -> {
+                                    sendMail(user, recommendations.value)
+                                    userRepository.updateUser(user.copy(notifiedAt = LocalDateTime.now()))
+                                }
                             }
                         }
                     }
@@ -58,15 +60,15 @@ class NotificationServiceImpl(
         }
     }
 
-    private suspend fun sendMail(user: User, recommandations: Recommandations) {
+    private suspend fun sendMail(user: User, recommendations: Recommandations) {
         val response: HttpResponse = client.post(baseUrl) {
             parameter("from", "noreply@mg.centurio.app")
             parameter("to", user.email)
             parameter("subject", "[Centurio] You have new recommandations !")
-            parameter("text", recommandations.toEmailText(user.address))
+            parameter("text", recommendations.toEmailText(user.address))
         }
         if (!response.status.isSuccess()) {
-            logger.error("Sending recommandations to ${user.address} failed")
+            logger.error("Sending recommendations to ${user.address} failed")
         }
     }
 
