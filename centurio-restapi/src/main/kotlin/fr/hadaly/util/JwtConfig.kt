@@ -13,7 +13,7 @@ private const val MS_PER_HOUR = 36_000_00L
 class JwtConfig(config: ApplicationConfig) {
 
     private val validityInMs = MS_PER_HOUR * HOURS * DAYS
-    private val secret: String = "pure-escarpment-71696-centurio" ?: config.property("ktor.jwt.secret").getString()
+    private val secret: String = config.property("ktor.jwt.secret").getString()
     private val issuer: String = config.property("ktor.jwt.issuer").getString()
     private val audience: String = config.property("ktor.jwt.audience").getString()
 
