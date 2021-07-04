@@ -9,7 +9,7 @@ val notificationModule = module {
     factory<NotificationService> { (engine: String) -> NotificationServiceImpl(
         config = get(),
         userRepository = get(),
-        recommandationEngine = get(named(engine))
+        recommendationEngine = get(named(engine))
     ) }
 }
 
