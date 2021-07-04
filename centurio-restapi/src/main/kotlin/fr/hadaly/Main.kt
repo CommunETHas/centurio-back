@@ -74,13 +74,12 @@ fun Application.module() {
 
     install(Routing) {
         index()
-        cover(get(), get(named(network)) { parametersOf(storageUrl) })
-        token(get { parametersOf(network) })
+        cover(coverRepository = get(), engine = get(named(network)) { parametersOf(storageUrl) })
+        token(tokenRequestHandler = get { parametersOf(network) })
         user(get())
-        authentication(get(), jwtConfig)
-        admin(get { parametersOf(network) })
+        authentication(authenticationRequestHandler = get(), jwtConfig = jwtConfig)
+        admin(notificationService = get { parametersOf(network) })
     }
-    println(jwtConfig.makeApiToken("bogdan"))
 }
 
 fun main(args: Array<String>) {
