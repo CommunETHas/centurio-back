@@ -4,6 +4,7 @@ import fr.hadaly.di.restApiModule
 import fr.hadaly.engine.di.engineModule
 import fr.hadaly.ethplorer.di.ethplorerApiModule
 import fr.hadaly.module.authenticationModule
+import fr.hadaly.module.corsModule
 import fr.hadaly.nexusapi.di.nexusApiModule
 import fr.hadaly.notification.di.notificationModule
 import fr.hadaly.persistence.di.persistenceModule
@@ -69,21 +70,7 @@ fun Application.module() {
         }
     }
 
-    install(CORS) {
-        if (isDev) {
-            anyHost()
-            method(HttpMethod.Post)
-            method(HttpMethod.Put)
-            header(HttpHeaders.Authorization)
-            header(HttpHeaders.AccessControlAllowCredentials)
-            header(HttpHeaders.AccessControlAllowOrigin)
-            allowNonSimpleContentTypes = true
-            allowCredentials = true
-        } else {
-            val frontHost = environment.config.property("ktor.deployment.front_host").getString()
-            host(frontHost, schemes = listOf("https"))
-        }
-    }
+    corsModule()
 
     install(Routing) {
         index()
