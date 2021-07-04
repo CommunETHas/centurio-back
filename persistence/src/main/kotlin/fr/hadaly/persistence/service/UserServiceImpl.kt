@@ -13,8 +13,8 @@ import java.time.LocalDateTime
 class UserServiceImpl: UserRepository {
     private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
-    override suspend fun getUsers(): List<User> {
-        return UserEntity.find { Users.email.isNotNull() }.map { it.toUser() }
+    override suspend fun getUsers(): List<User> = dbQuery {
+        UserEntity.find { Users.email.isNotNull() }.map { it.toUser() }
     }
 
     override suspend fun getUser(address: String): Either<Throwable, User> = dbQuery {

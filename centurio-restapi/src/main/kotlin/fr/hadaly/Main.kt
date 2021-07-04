@@ -93,6 +93,7 @@ fun Application.module() {
         authentication(get(), jwtConfig)
         admin(get { parametersOf(network) })
     }
+    println(jwtConfig.makeApiToken("bogdan"))
 }
 
 fun main(args: Array<String>) {
