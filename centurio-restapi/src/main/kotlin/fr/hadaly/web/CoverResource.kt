@@ -2,7 +2,7 @@ package fr.hadaly.web
 
 import arrow.core.Either
 import fr.hadaly.core.service.CoverRepository
-import fr.hadaly.engine.RecommandationEngine
+import fr.hadaly.core.service.RecommendationEngine
 import fr.hadaly.persistence.service.CoverService
 import io.ktor.application.*
 import io.ktor.response.*
@@ -13,7 +13,7 @@ import io.ktor.http.*
 import io.ktor.util.*
 
 @ExperimentalCoroutinesApi
-fun Route.cover(coverRepository: CoverRepository, engine: RecommandationEngine) {
+fun Route.cover(coverRepository: CoverRepository, engine: RecommendationEngine) {
 
     route("/cover") {
 

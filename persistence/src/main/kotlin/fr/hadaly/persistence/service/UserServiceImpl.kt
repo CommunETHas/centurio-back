@@ -8,9 +8,14 @@ import fr.hadaly.persistence.entity.Users
 import fr.hadaly.persistence.service.DatabaseFactory.dbQuery
 import fr.hadaly.persistence.toUser
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
 
 class UserServiceImpl: UserRepository {
     private val logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
+
+    override suspend fun getUsers(): List<User> = dbQuery {
+        UserEntity.find { Users.email.isNotNull() }.map { it.toUser() }
+    }
 
     override suspend fun getUser(address: String): Either<Throwable, User> = dbQuery {
         logger.info("Adding user $address")
@@ -33,6 +38,8 @@ class UserServiceImpl: UserRepository {
                 address = user.address.lowercase()
                 email = user.email
                 nonce = user.nonce
+                frequency = user.frequency ?: "never"
+                if (notifiedAt == null) { notifiedAt = LocalDateTime.now() }
             }.toUser()
         }
     }

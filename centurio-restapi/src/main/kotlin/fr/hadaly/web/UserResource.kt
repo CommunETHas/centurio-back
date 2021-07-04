@@ -32,7 +32,7 @@ fun Route.user(userRepository: UserRepository) {
             }
         }
 
-        authenticate {
+        authenticate("user") {
             get("/private/{address}") {
                 val address = call.parameters.getOrFail("address")
                 when (val user = userRepository.getUser(address)) {
@@ -42,6 +42,21 @@ fun Route.user(userRepository: UserRepository) {
                     }
                     is Either.Right -> {
                         handleKnownUser(userRepository, user, false)
+                    }
+                }
+            }
+
+            put {
+                val user = call.receive<User>()
+                application.environment.log.info("Received user $user")
+                when (val user = userRepository.updateUser(user)) {
+                    is Either.Left -> {
+                        val response =
+                            ErrorResponse(HttpStatusCode.InternalServerError.value, user.value.message.toString())
+                        call.respond(HttpStatusCode.InternalServerError, response)
+                    }
+                    is Either.Right -> {
+                        call.respond(HttpStatusCode.Accepted, "User updated")
                     }
                 }
             }
@@ -57,21 +72,6 @@ fun Route.user(userRepository: UserRepository) {
                 }
                 is Either.Right -> {
                     call.respond(HttpStatusCode.Created, "User registered")
-                }
-            }
-        }
-
-        put {
-            val user = call.receive<User>()
-            application.environment.log.info("Received user $user")
-            when (val user = userRepository.updateUser(user)) {
-                is Either.Left -> {
-                    val response =
-                        ErrorResponse(HttpStatusCode.InternalServerError.value, user.value.message.toString())
-                    call.respond(HttpStatusCode.InternalServerError, response)
-                }
-                is Either.Right -> {
-                    call.respond(HttpStatusCode.Accepted, "User updated")
                 }
             }
         }

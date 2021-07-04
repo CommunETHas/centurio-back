@@ -3,28 +3,33 @@ package fr.hadaly
 import fr.hadaly.di.restApiModule
 import fr.hadaly.engine.di.engineModule
 import fr.hadaly.ethplorer.di.ethplorerApiModule
-import fr.hadaly.persistence.di.persistenceModule
+import fr.hadaly.module.authenticationModule
+import fr.hadaly.module.corsModule
 import fr.hadaly.nexusapi.di.nexusApiModule
+import fr.hadaly.notification.di.notificationModule
+import fr.hadaly.persistence.di.persistenceModule
 import fr.hadaly.persistence.service.DatabaseFactory
+import fr.hadaly.util.JsonMapper
+import fr.hadaly.util.JwtConfig
+import fr.hadaly.web.admin
+import fr.hadaly.web.authentication
+import fr.hadaly.web.cover
+import fr.hadaly.web.index
+import fr.hadaly.web.token
+import fr.hadaly.web.user
 import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.features.*
+import io.ktor.http.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import fr.hadaly.util.JsonMapper
-import fr.hadaly.util.JwtConfig
-import fr.hadaly.web.authentication
-import fr.hadaly.web.cover
-import fr.hadaly.web.index
-import fr.hadaly.web.user
-import fr.hadaly.web.token
-import io.ktor.auth.*
-import io.ktor.auth.jwt.*
-import io.ktor.http.*
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
 import org.koin.logger.slf4jLogger
@@ -42,24 +47,18 @@ fun Application.module() {
     install(Koin) {
         slf4jLogger()
         modules(
-            org.koin.dsl.module { single { environment.config } },
+            module { single { environment.config } },
             restApiModule,
             nexusApiModule,
             ethplorerApiModule,
             persistenceModule,
-            engineModule
+            engineModule,
+            notificationModule
         )
     }
 
     val jwtConfig: JwtConfig = get { parametersOf(environment.config) }
-
-    install(Authentication) {
-        jwt {
-            realm = environment.config.property("ktor.jwt.realm").getString()
-            verifier(jwtConfig.verifier)
-            validate { JWTPrincipal(it.payload) }
-        }
-    }
+    authenticationModule(jwtConfig)
 
     when {
         isDev -> {
@@ -71,29 +70,17 @@ fun Application.module() {
         }
     }
 
-    install(CORS) {
-        if (isDev) {
-            anyHost()
-            method(HttpMethod.Post)
-            method(HttpMethod.Put)
-            header(HttpHeaders.Authorization)
-            header(HttpHeaders.AccessControlAllowCredentials)
-            header(HttpHeaders.AccessControlAllowOrigin)
-            allowNonSimpleContentTypes = true
-            allowCredentials = true
-        } else {
-            val frontHost = environment.config.property("ktor.deployment.front_host").getString()
-            host(frontHost, schemes = listOf("https"))
-        }
-    }
+    corsModule()
 
     install(Routing) {
         index()
         cover(get(), get(named(network)) { parametersOf(storageUrl) })
-        token(get())
+        token(get { parametersOf(network) })
         user(get())
         authentication(get(), jwtConfig)
+        admin(get { parametersOf(network) })
     }
+    println(jwtConfig.makeApiToken("bogdan"))
 }
 
 fun main(args: Array<String>) {

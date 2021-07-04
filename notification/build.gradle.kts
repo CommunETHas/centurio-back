@@ -6,10 +6,8 @@ plugins {
 
 dependencies {
     implementation(project(":centurio-core"))
-    implementation("org.web3j:core:5.0.0")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 }
-
 

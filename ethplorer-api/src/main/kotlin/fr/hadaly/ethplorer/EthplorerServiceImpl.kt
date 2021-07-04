@@ -1,6 +1,7 @@
 package fr.hadaly.ethplorer
 
 import arrow.core.Either
+import fr.hadaly.core.service.Configuration
 import fr.hadaly.ethplorer.model.AddressInfo
 import fr.hadaly.ethplorer.model.TokenInfo
 import fr.hadaly.ethplorer.model.WalletInfo
@@ -10,15 +11,21 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import org.slf4j.LoggerFactory
 
 class EthplorerServiceImpl(
-    chain: String = "MAINNET"
+    chain: String = "MAINNET",
+    configuration: Configuration
 ) : EthplorerService {
+    private val logger = LoggerFactory.getLogger(EthplorerServiceImpl::class.java)
+    private val apiKey = configuration.getString("ktor.deployment.ethplorer")
 
-    private val baseUrl: String = when(chain) {
+        private val baseUrl: String = when(chain) {
         "MAINNET" -> "http://api.ethplorer.io"
         "KOVAN" -> "http://kovan-api.ethplorer.io"
         else -> throw IllegalArgumentException("$chain is not supported yet.")
+    }.also {
+        logger.info("Using $it Ethplorer API")
     }
 
     private val client = HttpClient {
@@ -33,7 +40,7 @@ class EthplorerServiceImpl(
         val url = "$baseUrl/getAddressInfo/$address"
         return Either.catch {
             client.get<AddressInfo>(url) {
-                parameter("apiKey", "freekey")
+                parameter("apiKey", apiKey)
             }.toWalletInfo()
         }
     }
