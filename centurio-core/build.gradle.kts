@@ -7,6 +7,5 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib"))
     api(project(":nexus-api"))
-    api(project(":ethplorer-api"))
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")
 }
