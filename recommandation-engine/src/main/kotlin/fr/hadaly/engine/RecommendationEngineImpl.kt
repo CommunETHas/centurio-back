@@ -34,9 +34,10 @@ class RecommendationEngineImpl(
                             "with ${walletInfo.value.transactionCount} transactions."
                 )
                 val unsupportedTokens =
-                    walletInfo.value.tokens.mapNotNull { checkTokens(it) }.sortedBy { it.tokenInfo.name }
+                    walletInfo.value.tokens.mapNotNull { checkTokens(it) }
                 val recommandations =
-                    handleTokens((walletInfo.value.tokens - unsupportedTokens)).sortedBy { it.cover.name }
+                    handleTokens((walletInfo.value.tokens - unsupportedTokens))
+                println(recommandations)
                 Either.Right(Recommandations(
                     recommandations.size,
                     recommandations = recommandations,
@@ -47,27 +48,30 @@ class RecommendationEngineImpl(
     }
 
     suspend fun handleTokens(tokens: List<Token>): List<Recommandation> {
-        val coverToReasoning = mutableMapOf<Cover, MutableList<Reasoning>>()
+        val coverToReasoning = mutableMapOf<String, MutableList<Reasoning>>()
+        val coverIdtoCover = mutableMapOf<String, Cover>()
         tokens.map { tokenService.getTokenByAddress(it.tokenInfo.address) }.forEach {
             when (it) {
                 is Either.Left -> {
                     logger.warn("Failed to handle token : ${it.value.message}")
                 }
                 is Either.Right -> {
-                    handleCover(coverToReasoning, it.value)
+                    handleCover(coverToReasoning, coverIdtoCover, it.value)
                 }
             }
         }
-        return coverToReasoning.map { Recommandation(it.key, it.value.toList()) }
+        return coverToReasoning.map { Recommandation(coverIdtoCover[it.key]!!, it.value.toList()) }
     }
 
     fun handleCover(
-        coverToReasoning: MutableMap<Cover, MutableList<Reasoning>>,
+        coverToReasoning: MutableMap<String, MutableList<Reasoning>>,
+        coverIdToCover: MutableMap<String, Cover>,
         token: SimpleToken
     ) {
         token.recommendedCovers.forEach { cover ->
-            if (!coverToReasoning.containsKey(cover)) coverToReasoning[cover] = mutableListOf()
-            coverToReasoning[cover]?.add(buildRecommandation(token))
+            if (!coverToReasoning.containsKey(cover.address)) coverToReasoning[cover.address] = mutableListOf()
+            coverToReasoning[cover.address]?.add(buildRecommandation(token))
+            coverIdToCover[cover.address] = cover
         }
     }
 
