@@ -19,6 +19,7 @@ import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.exposedLogger
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 class TokenServiceImpl : TokenRepository {
@@ -64,7 +65,9 @@ class TokenServiceImpl : TokenRepository {
             newSuspendedTransaction(Dispatchers.Default) {
                 TokensCovers.insert {
                     it[token] = tokenEntity.id
-                    it[cover] = CoverEntity.find { Covers.address eq recommandation.address }.first().id
+                    it[cover] = CoverEntity.find {
+                        Covers.address.lowerCase() eq recommandation.address.lowercase()
+                    }.first().id
                 }
             }
         } catch (error: ExposedSQLException) {
