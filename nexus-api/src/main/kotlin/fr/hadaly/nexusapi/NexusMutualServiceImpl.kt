@@ -15,7 +15,7 @@ import kotlin.io.path.outputStream
 import kotlin.io.path.readText
 
 class NexusMutualServiceImpl: NexusMutalService {
-    private val baseUrl = "https://api.staging.nexusmutual.io"
+    private val baseUrl = "https://api.nexusmutual.io"
     private val client = HttpClient {
         serializer<Serializer>()
     }
