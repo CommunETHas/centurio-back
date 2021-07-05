@@ -37,7 +37,6 @@ class RecommendationEngineImpl(
                     walletInfo.value.tokens.mapNotNull { checkTokens(it) }
                 val recommandations =
                     handleTokens((walletInfo.value.tokens - unsupportedTokens))
-                println(recommandations)
                 Either.Right(Recommandations(
                     recommandations.size,
                     recommandations = recommandations,
