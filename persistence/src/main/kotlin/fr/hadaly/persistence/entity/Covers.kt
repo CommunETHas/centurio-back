@@ -11,7 +11,7 @@ object Covers : IntIdTable() {
     val address = varchar("address", 255).uniqueIndex()
     val type = varchar("type", 32)
     val site = varchar("site", 255).nullable()
-    val symbol = varchar("symbol", 10).nullable()
+    val symbol = varchar("symbol", 255).nullable()
     val underlyingToken = varchar("underlyingToken", 255).nullable()
     val dateAdded = long("dateAdded")
     val deprecated = bool("deprecated").nullable()
