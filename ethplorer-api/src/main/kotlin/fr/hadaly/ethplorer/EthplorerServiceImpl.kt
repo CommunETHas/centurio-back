@@ -49,7 +49,7 @@ class EthplorerServiceImpl(
         val url = "$baseUrl/getTokenInfo/$address"
         return Either.catch {
             client.get<TokenInfo>(url) {
-                parameter("apiKey", "freekey")
+                parameter("apiKey", apiKey)
             }
         }
     }
