@@ -1,14 +1,6 @@
 import io.gitlab.arturbosch.detekt.Detekt
 
-val ktorVersion = "1.6.1"
-val exposedVersion = "0.32.1"
-val h2Version = "1.4.200"
-val hikariCpVersion = "4.0.3"
-val flywayVersion = "7.11.1"
 val logbackVersion = "1.2.3"
-val assertjVersion = "3.19.0"
-val restAssuredVersion = "4.4.0"
-val junitVersion = "5.7.1"
 val koinVersion = "3.1.2"
 val arrowVersion = "0.13.2"
 
@@ -18,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
     }
 }
 
@@ -83,6 +75,21 @@ val detektAll by tasks.registering(Detekt::class) {
 allprojects {
     group = "fr.hadaly"
     version = "0.0.1"
+
+    extra["arrowVersion"] = "0.13.2"
+    extra["assertjVersion"] = "3.20.2"
+    extra["exposedVersion"] = "0.32.1"
+    extra["flywayVersion"] = "7.11.2"
+    extra["h2Version"] = "1.4.200"
+    extra["hikariCpVersion"] = "4.0.3"
+    extra["junitVersion"] = "5.7.2"
+    extra["koinVersion"] = "3.1.2"
+    extra["kotlinVersion"] = "1.5.21"
+    extra["ktorVersion"] = "1.6.1"
+    extra["logbackVersion"] = "1.2.3"
+    extra["postgreVersion"] = "42.2.23"
+    extra["restAssuredVersion"] = "4.4.0"
+    extra["web3j"] = "5.0.0"
 
     apply {
         plugin("org.jetbrains.kotlin.jvm")
