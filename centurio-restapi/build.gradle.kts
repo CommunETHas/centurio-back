@@ -1,5 +1,3 @@
-val ktorVersion = "1.6.1"
-val exposedVersion = "0.32.1"
 val h2Version = "1.4.200"
 val hikariCpVersion = "4.0.3"
 val flywayVersion = "7.10.0"
@@ -10,7 +8,7 @@ val junitVersion = "5.7.2"
 val koinVersion = "3.1.0"
 
 plugins {
-    kotlin("plugin.serialization") version "1.5.20"
+    kotlin("plugin.serialization") version "1.5.21"
     application
 }
 
@@ -23,25 +21,25 @@ dependencies {
     implementation(project(":centurio-core"))
     implementation(project(":notification"))
 
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-serialization:$ktorVersion")
-    implementation("io.ktor:ktor-websockets:$ktorVersion")
-    implementation("io.ktor:ktor-auth:$ktorVersion")
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:${rootProject.extra["ktorVersion"]}")
+    implementation("io.ktor:ktor-serialization:${rootProject.extra["ktorVersion"]}")
+    implementation("io.ktor:ktor-websockets:${rootProject.extra["ktorVersion"]}")
+    implementation("io.ktor:ktor-auth:${rootProject.extra["ktorVersion"]}")
+    implementation("io.ktor:ktor-auth-jwt:${rootProject.extra["ktorVersion"]}")
 
-    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:${rootProject.extra["ktorVersion"]}")
 
-    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-    implementation("org.web3j:core:5.0.0")
-    implementation("org.web3j:crypto:5.0.0")
-    implementation("org.web3j:utils:5.0.0")
+    implementation("org.jetbrains.exposed:exposed-core:${rootProject.extra["exposedVersion"]}")
+    implementation("org.jetbrains.exposed:exposed-dao:${rootProject.extra["exposedVersion"]}")
+    implementation("org.web3j:core:${rootProject.extra["web3j"]}")
+    implementation("org.web3j:crypto:${rootProject.extra["web3j"]}")
+    implementation("org.web3j:utils:${rootProject.extra["web3j"]}")
 
-    testImplementation("org.assertj:assertj-core:$assertjVersion")
-    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("io.ktor:ktor-client-cio:$ktorVersion")
+    testImplementation("org.assertj:assertj-core:${rootProject.extra["assertjVersion"]}")
+    testImplementation("io.rest-assured:rest-assured:${rootProject.extra["restAssuredVersion"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${rootProject.extra["junitVersion"]}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${rootProject.extra["junitVersion"]}")
+    testImplementation("io.ktor:ktor-client-cio:${rootProject.extra["ktorVersion"]}")
 }
 
 application {
