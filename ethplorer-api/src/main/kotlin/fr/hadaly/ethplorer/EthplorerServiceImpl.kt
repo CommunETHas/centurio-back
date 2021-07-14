@@ -1,6 +1,7 @@
 package fr.hadaly.ethplorer
 
 import arrow.core.Either
+import fr.hadaly.core.model.EthereumChain
 import fr.hadaly.core.service.Configuration
 import fr.hadaly.ethplorer.model.AddressInfo
 import fr.hadaly.ethplorer.model.TokenInfo
@@ -14,19 +15,11 @@ import io.ktor.http.*
 import org.slf4j.LoggerFactory
 
 class EthplorerServiceImpl(
-    chain: String = "MAINNET",
     configuration: Configuration
 ) : EthplorerService {
     private val logger = LoggerFactory.getLogger(EthplorerServiceImpl::class.java)
-    private val apiKey = configuration.getString("ktor.deployment.ethplorer")
-
-        private val baseUrl: String = when(chain) {
-        "MAINNET" -> "http://api.ethplorer.io"
-        "KOVAN" -> "http://kovan-api.ethplorer.io"
-        else -> throw IllegalArgumentException("$chain is not supported yet.")
-    }.also {
-        logger.info("Using $it Ethplorer API")
-    }
+    private val apiKey = configuration.getString(Configuration.Name.ETHPLORER_APIKEY)
+    private val baseUrl: String = getBaseUrl(configuration)
 
     private val client = HttpClient {
         install(JsonFeature) {
@@ -53,4 +46,13 @@ class EthplorerServiceImpl(
             }
         }
     }
+
+    private fun getBaseUrl(configuration: Configuration) =
+        when (val ethChain = configuration.getString(Configuration.Name.ETHEREUM_CHAIN).uppercase()) {
+            EthereumChain.MAINNET.name -> "http://api.ethplorer.io"
+            EthereumChain.KOVAN.name -> "http://kovan-api.ethplorer.io"
+            else -> throw IllegalArgumentException("$ethChain is not supported yet.")
+        }.also {
+            logger.info("Using $it Ethplorer API")
+        }
 }

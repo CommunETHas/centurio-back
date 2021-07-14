@@ -1,6 +1,5 @@
 package fr.hadaly.di
 
-import fr.hadaly.core.model.ChainNetwork
 import fr.hadaly.core.service.Configuration
 import fr.hadaly.handler.AuthenticationRequestHandler
 import fr.hadaly.handler.TokenRequestHandler
@@ -12,11 +11,11 @@ import org.koin.dsl.module
 
 val restApiModule = module {
     factory { (config: ApplicationConfig) -> JwtConfig(config) }
-    factory { (network: String) ->
+    factory {
         TokenRequestHandler(
             tokenRepository = get(),
             coverRepository = get(),
-            ethplorerService = get(named(network.uppercase()))
+            ethplorerService = get()
         )
     }
     factory { AuthenticationRequestHandler() }

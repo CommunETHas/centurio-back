@@ -6,10 +6,12 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val notificationModule = module {
-    factory<NotificationService> { (engine: String) -> NotificationServiceImpl(
-        config = get(),
-        userRepository = get(),
-        recommendationEngine = get(named(engine))
-    ) }
+    factory<NotificationService> {
+        NotificationServiceImpl(
+            config = get(),
+            userRepository = get(),
+            recommendationEngine = get()
+        )
+    }
 }
 
