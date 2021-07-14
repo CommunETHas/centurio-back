@@ -7,4 +7,8 @@ class ConfigurationProvider(private val config: ApplicationConfig): Configuratio
     override fun getString(key: String): String {
         return config.property(key).getString()
     }
+
+    override fun getString(name: Configuration.Name): String {
+        return config.property(name.key).getString()
+    }
 }

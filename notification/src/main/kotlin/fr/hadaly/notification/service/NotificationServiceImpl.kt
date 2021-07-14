@@ -28,7 +28,7 @@ class NotificationServiceImpl(
     private val recommendationEngine: RecommendationEngine
 ) : NotificationService {
     private val logger = LoggerFactory.getLogger(NotificationServiceImpl::class.java)
-    private val baseUrl = config.getString("ktor.deployment.sendmail")
+    private val baseUrl = config.getString(Configuration.Name.MAIL_BASE_URL)
     private val client = HttpClient {
         serializer<Serializer>()
     }
