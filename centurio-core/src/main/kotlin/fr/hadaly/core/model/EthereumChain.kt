@@ -1,6 +1,6 @@
 package fr.hadaly.core.model
 
-enum class ChainNetwork {
+enum class EthereumChain {
     MAINNET,
     KOVAN
 }

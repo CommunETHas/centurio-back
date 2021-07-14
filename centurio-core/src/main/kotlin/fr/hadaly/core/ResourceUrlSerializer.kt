@@ -1,7 +1,6 @@
 package fr.hadaly.core
 
 import fr.hadaly.core.model.ResourceUrl
-import fr.hadaly.core.model.SimpleToken
 import fr.hadaly.core.service.Configuration
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -14,8 +13,8 @@ import org.koin.core.component.inject
 
 @Serializer(forClass = ResourceUrl::class)
 object ResourceUrlSerializer: KoinComponent {
-    val config: Configuration by inject()
-    val prefix = config.getString("ktor.deployment.storage")
+    private val config: Configuration by inject()
+    private val prefix = config.getString(Configuration.Name.STORAGE_URL)
 
     override fun deserialize(decoder: Decoder): ResourceUrl {
         return ResourceUrl("$prefix/${decoder.decodeString()}")

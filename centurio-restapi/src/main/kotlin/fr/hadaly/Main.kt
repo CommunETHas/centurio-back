@@ -74,11 +74,11 @@ fun Application.module() {
 
     install(Routing) {
         index()
-        cover(coverRepository = get(), engine = get(named(network)) { parametersOf(storageUrl) })
-        token(tokenRequestHandler = get { parametersOf(network) })
+        cover(coverRepository = get(), engine = get())
+        token(tokenRequestHandler = get())
         user(get())
         authentication(authenticationRequestHandler = get(), jwtConfig = jwtConfig)
-        admin(notificationService = get { parametersOf(network) })
+        admin(notificationService = get())
     }
 }
 

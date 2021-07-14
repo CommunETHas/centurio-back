@@ -89,8 +89,14 @@ class CoverServiceImpl : CoverRepository, KoinComponent {
     }
 
     override suspend fun getCoverByAddress(address: String): Either<Throwable, Cover> = dbQuery {
-        Either.catch {
-            CoverEntity.find { Covers.address.lowerCase() eq address.lowercase() }.first().toCover()
+        val cover = CoverEntity.find {
+            Covers.address.lowerCase() eq address.lowercase()
+        }.firstOrNull()?.toCover()
+
+        if (cover != null) {
+            Either.Right(cover)
+        } else {
+            Either.Left(NoSuchElementException("No cover with address: $address"))
         }
     }
 
