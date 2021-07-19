@@ -1,6 +1,6 @@
 import io.gitlab.arturbosch.detekt.Detekt
 
-val logbackVersion = "1.2.3"
+val logbackVersion = "1.2.4"
 val koinVersion = "3.1.2"
 val arrowVersion = "0.13.2"
 
