@@ -1,11 +1,10 @@
 package fr.hadaly.web
 
+import arrow.core.Either
 import ch.qos.logback.core.subst.Token
 import fr.hadaly.core.model.SimpleToken
 import fr.hadaly.core.service.CoverRepository
-import fr.hadaly.core.service.TokenRepository
-import fr.hadaly.engine.toSimpleToken
-import fr.hadaly.ethplorer.EthplorerService
+import fr.hadaly.core.repository.TokenRepository
 import fr.hadaly.handler.TokenRequestHandler
 import io.ktor.application.*
 import io.ktor.response.*
@@ -22,6 +21,26 @@ fun Route.token(tokenRequestHandler: TokenRequestHandler) {
 
     route("/token") {
         authenticate("admin") {
+            get {
+                call.respond(tokenRequestHandler.getTokens())
+            }
+
+            get("/{address}") {
+                if (call.parameters.contains("address")) {
+                    val address = call.parameters.getOrFail("address")
+                    call.application.environment.log.debug("Requesting token $address")
+                    when (val token = tokenRequestHandler.getToken(address)) {
+                        is Either.Left -> {
+                            call.respond(HttpStatusCode.NotFound, "Unknown token address")
+                        }
+                        is Either.Right -> {
+                            call.respond(token.value)
+                        }
+                    }
+
+                }
+            }
+
             post {
                 val tokenRequest = call.receive<List<TokenRequest>>()
                 call.application.environment.log.info(tokenRequest.toString())

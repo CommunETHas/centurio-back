@@ -6,7 +6,7 @@ import fr.hadaly.core.model.Cover
 interface CoverRepository {
         suspend fun getAllCovers(): List<Cover>
 
-        suspend fun getCover(id: Int): Cover
+        suspend fun getCover(id: Int): Either<Throwable, Cover>
 
         suspend fun getCoverByAddress(address: String): Either<Throwable, Cover>
 

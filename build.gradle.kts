@@ -2,6 +2,7 @@ import io.gitlab.arturbosch.detekt.Detekt
 
 val logbackVersion = "1.2.4-groovyless"
 val koinVersion = "3.1.2"
+val ktorVersion = "1.6.1"
 val arrowVersion = "0.13.2"
 
 buildscript {
@@ -104,6 +105,8 @@ allprojects {
         implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
         implementation("io.arrow-kt:arrow-core:$arrowVersion")
+        testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+        testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
     }
 
     tasks.withType<Test> {

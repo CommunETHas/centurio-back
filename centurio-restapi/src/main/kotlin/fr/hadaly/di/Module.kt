@@ -14,8 +14,7 @@ val restApiModule = module {
     factory {
         TokenRequestHandler(
             tokenRepository = get(),
-            coverRepository = get(),
-            ethplorerService = get()
+            coverRepository = get()
         )
     }
     factory { AuthenticationRequestHandler() }

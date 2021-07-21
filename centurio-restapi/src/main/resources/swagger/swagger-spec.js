@@ -5,10 +5,10 @@ window.swaggerSpec={
     "version" : "1.0.0",
     "title" : "Centurio",
     "contact" : {
-      "email" : "ooctogene@gmail.com"
+      "email" : "team@centurio.app"
     }
   },
-  "host" : "centurio-hm2021.herokuapp.com",
+  "host" : "api.centurio.app",
   "basePath" : "/",
   "tags" : [ {
     "name" : "cover",
@@ -16,6 +16,31 @@ window.swaggerSpec={
   } ],
   "schemes" : [ "https", "http" ],
   "paths" : {
+    "/token/{address}" : {
+      "get" : {
+        "tags" : [ "token" ],
+        "summary" : "Get token info for a given address",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "address",
+          "in" : "path",
+          "description" : "Address of a token",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Token"
+            }
+          },
+          "400" : {
+            "description" : "Unknown/Invalid Token Address"
+          }
+        }
+      }
+    },
     "/token" : {
       "post" : {
         "tags" : [ "token" ],

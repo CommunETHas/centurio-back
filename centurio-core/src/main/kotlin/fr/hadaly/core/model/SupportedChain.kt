@@ -1,7 +1,6 @@
 package fr.hadaly.core.model
 
 import fr.hadaly.core.ResourceUrlSerializer
-import fr.hadaly.nexusapi.model.Chain
 import kotlinx.serialization.Serializable
 
 @Serializable
