@@ -1,12 +1,15 @@
 package fr.hadaly.ethplorer
 
 import arrow.core.Either
+import fr.hadaly.core.datasource.RemoteDataSource
 import fr.hadaly.core.model.EthereumChain
+import fr.hadaly.core.model.SimpleToken
+import fr.hadaly.core.model.Wallet
 import fr.hadaly.core.service.Configuration
+import fr.hadaly.core.service.WalletService
 import fr.hadaly.ethplorer.model.AddressInfo
 import fr.hadaly.ethplorer.model.TokenInfo
-import fr.hadaly.ethplorer.model.WalletInfo
-import fr.hadaly.ethplorer.model.toWalletInfo
+import fr.hadaly.ethplorer.model.toWallet
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
@@ -16,7 +19,8 @@ import org.slf4j.LoggerFactory
 
 class EthplorerServiceImpl(
     configuration: Configuration
-) : EthplorerService {
+) : RemoteDataSource<SimpleToken, String>,
+    WalletService {
     private val logger = LoggerFactory.getLogger(EthplorerServiceImpl::class.java)
     private val apiKey = configuration.getString(Configuration.Name.ETHPLORER_APIKEY)
     private val baseUrl: String = getBaseUrl(configuration)
@@ -29,22 +33,22 @@ class EthplorerServiceImpl(
         }
     }
 
-    override suspend fun getWalletInfo(address: String): Either<Throwable, WalletInfo> {
+    override suspend fun getWallet(address: String): Either<Throwable, Wallet> {
         val url = "$baseUrl/getAddressInfo/$address"
         return Either.catch {
             client.get<AddressInfo>(url) {
                 parameter("apiKey", apiKey)
-            }.toWalletInfo()
+            }.toWallet()
         }
     }
 
-    override suspend fun getTokenInfo(address: String): Either<Throwable, TokenInfo> {
+    override suspend fun getById(address: String): Either<Throwable, SimpleToken> {
         val url = "$baseUrl/getTokenInfo/$address"
         return Either.catch {
             client.get<TokenInfo>(url) {
                 parameter("apiKey", apiKey)
             }
-        }
+        }.map { it.toSimpleToken() }
     }
 
     private fun getBaseUrl(configuration: Configuration) =
@@ -55,4 +59,8 @@ class EthplorerServiceImpl(
         }.also {
             logger.info("Using $it Ethplorer API")
         }
+
+    override suspend fun getAll(): List<SimpleToken> {
+        throw UnsupportedOperationException("Not yet supported")
+    }
 }

@@ -12,6 +12,7 @@ data class SimpleToken(
     val owner: String? = null,
     val known: Boolean = false,
     val recommendedCovers: List<Cover> = emptyList(),
+    val underlyingTokens: List<SimpleToken> = emptyList(),
     @Required
     @Serializable(with = ResourceUrlSerializer::class)
     val logoUrl: ResourceUrl = ResourceUrl("/asset/$address.png")

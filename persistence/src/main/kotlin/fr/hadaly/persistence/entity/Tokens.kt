@@ -23,10 +23,23 @@ class TokenEntity(id: EntityID<Int>): IntEntity(id) {
     var known by Tokens.known
     var symbol by Tokens.symbol
     var recommendedCovers by CoverEntity via TokensCovers
+    val underlyingTokens by UnderlyingToken referrersOn UnderlyingTokens.parent
+}
+
+object UnderlyingTokens: IntIdTable() {
+    val parent = reference("parent", Tokens)
+    val child = reference("child", Tokens)
+}
+
+class UnderlyingToken(id: EntityID<Int>): IntEntity(id) {
+    companion object: IntEntityClass<UnderlyingToken>(UnderlyingTokens)
+    var parent by UnderlyingTokens.parent
+    var child by UnderlyingTokens.child
 }
 
 object TokensCovers: Table() {
     val token = reference("token", Tokens)
     val cover = reference("cover", Covers)
+    val reason = text("reason").nullable()
     override val primaryKey = PrimaryKey(token, cover)
 }

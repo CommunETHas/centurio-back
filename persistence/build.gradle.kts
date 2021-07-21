@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation(project(":centurio-core"))
-    implementation(project(":ethplorer-api"))
+//    implementation(project(":ethplorer-api"))
     implementation("io.ktor:ktor-serialization:${rootProject.extra["ktorVersion"]}")
     implementation("io.ktor:ktor-client-serialization:${rootProject.extra["ktorVersion"]}")
 

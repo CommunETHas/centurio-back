@@ -1,5 +1,6 @@
 package fr.hadaly.nexusapi.model
 
+import fr.hadaly.core.model.Chain
 import fr.hadaly.nexusapi.model.serializer.DateAddedSerializer
 import kotlinx.serialization.Serializable
 import java.util.*

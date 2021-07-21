@@ -13,7 +13,6 @@ object Covers : IntIdTable() {
     val site = varchar("site", 255).nullable()
     val symbol = varchar("symbol", 255).nullable()
     val underlyingToken = varchar("underlyingToken", 255).nullable()
-    val dateAdded = long("dateAdded")
     val deprecated = bool("deprecated").nullable()
     val logo = varchar("logo", 255).nullable()
     override val primaryKey = PrimaryKey(id)
@@ -28,7 +27,6 @@ class CoverEntity(id: EntityID<Int>) : IntEntity(id) {
     var site by Covers.site
     var symbol by Covers.symbol
     var underlyingToken by Covers.underlyingToken
-    var dateAdded by Covers.dateAdded
     var deprecated by Covers.deprecated
     var logo by Covers.logo
     var supportedChains by ChainEntity via ChainsCovers
