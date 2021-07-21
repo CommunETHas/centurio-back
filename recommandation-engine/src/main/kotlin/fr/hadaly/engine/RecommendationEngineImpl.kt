@@ -1,100 +1,84 @@
 package fr.hadaly.engine
 
 import arrow.core.Either
-import fr.hadaly.core.model.Recommandations
-import fr.hadaly.core.model.Recommandation
+import arrow.core.getOrHandle
 import fr.hadaly.core.model.Cover
 import fr.hadaly.core.model.Reasoning
-import fr.hadaly.core.model.SimpleToken
+import fr.hadaly.core.model.Recommandation
+import fr.hadaly.core.model.Recommandations
 import fr.hadaly.core.model.ResourceUrl
+import fr.hadaly.core.model.SimpleToken
+import fr.hadaly.core.model.Wallet
+import fr.hadaly.core.repository.TokenRepository
 import fr.hadaly.core.service.RecommendationEngine
-import fr.hadaly.core.service.TokenRepository
-import fr.hadaly.ethplorer.EthplorerService
-import fr.hadaly.ethplorer.model.Token
-import fr.hadaly.ethplorer.model.WalletInfo
+import fr.hadaly.core.service.WalletService
 import org.slf4j.LoggerFactory
 
 class RecommendationEngineImpl(
-    private val ethplorerService: EthplorerService,
-    private val tokenService: TokenRepository
+    private val walletService: WalletService,
+    private val tokenRepository: TokenRepository
 ) : RecommendationEngine {
-    private val logger = LoggerFactory.getLogger("fr.hadaly.core.RecommandationEngine")
+    private val logger = LoggerFactory.getLogger(RecommendationEngineImpl::class.java)
 
     override suspend fun recommendFor(address: String): Either<Throwable, Recommandations> {
-        val walletInfo: Either<Throwable, WalletInfo> = ethplorerService.getWalletInfo(address)
-        return when (walletInfo) {
+        return when (val wallet = walletService.getWallet(address)) {
             is Either.Left -> {
-                logger.error(walletInfo.value.message)
-                logger.error("Wallet $address is not a valid wallet.")
+                logger.error("Wallet $address is not a valid wallet : ${wallet.value.message}")
                 Either.Left(IllegalArgumentException("Address $address is not valid."))
             }
             is Either.Right -> {
                 logger.info(
                     "Checking recommandation for $address " +
-                            "with ${walletInfo.value.transactionCount} transactions."
+                            "with ${wallet.value.transactionCount} transactions."
                 )
-                val unsupportedTokens =
-                    walletInfo.value.tokens.mapNotNull { checkTokens(it) }
-                val recommandations =
-                    handleTokens((walletInfo.value.tokens - unsupportedTokens))
-                Either.Right(Recommandations(
-                    recommandations.size,
-                    recommandations = recommandations,
-                    unsuportedTokens = unsupportedTokens.map { it.toSimpleToken() }
-                ))
+                Either.Right(processRawTokens(wallet.value))
             }
         }
     }
 
-    suspend fun handleTokens(tokens: List<Token>): List<Recommandation> {
+    private suspend fun processRawTokens(wallet: Wallet): Recommandations {
+        val splitTokens = splitSupportedTokens(wallet.tokens)
+        val supportedTokens = splitTokens.getOrDefault(false, emptyList())
+        val unsupportedTokens = splitTokens.getOrDefault(true, emptyList())
+        val recommendations = processSupportedTokens(supportedTokens)
+        return Recommandations(
+                recommendations.size,
+                recommandations = recommendations,
+                unsuportedTokens = unsupportedTokens
+            )
+    }
+
+    private fun processSupportedTokens(tokens: List<SimpleToken>): List<Recommandation> {
         val coverToReasoning = mutableMapOf<String, MutableList<Reasoning>>()
         val coverIdtoCover = mutableMapOf<String, Cover>()
-        tokens.map { tokenService.getTokenByAddress(it.tokenInfo.address) }.forEach {
-            when (it) {
-                is Either.Left -> {
-                    logger.warn("Failed to handle token : ${it.value.message}")
-                }
-                is Either.Right -> {
-                    handleCover(coverToReasoning, coverIdtoCover, it.value)
-                }
-            }
-        }
+        tokens.forEach { token -> handleCover(coverToReasoning, coverIdtoCover, token) }
         return coverToReasoning.map { Recommandation(coverIdtoCover[it.key]!!, it.value.toList()) }
     }
 
-    fun handleCover(
+    private fun handleCover(
         coverToReasoning: MutableMap<String, MutableList<Reasoning>>,
         coverIdToCover: MutableMap<String, Cover>,
         token: SimpleToken
     ) {
         token.recommendedCovers.forEach { cover ->
             if (!coverToReasoning.containsKey(cover.address)) coverToReasoning[cover.address] = mutableListOf()
-            coverToReasoning[cover.address]?.add(buildRecommandation(token))
+            coverToReasoning[cover.address]?.add(getReasoning(token))
             coverIdToCover[cover.address] = cover
         }
     }
 
-    private fun buildRecommandation(
-        token: SimpleToken
-    ) =
+    private fun getReasoning(token: SimpleToken) =
         Reasoning(
             token.symbol,
             ResourceUrl(token.logoUrl.value),
             "Lorem ipsum my friend, Lorem Ipsum !"
         )
 
-    suspend fun checkTokens(token: Token): Token? =
-        when (val tokenInfoResult = tokenService.getTokenByAddress(token.tokenInfo.address)) {
-            is Either.Left -> {
-                tokenService.addToken(token.toSimpleToken())
-                token
+    private suspend fun splitSupportedTokens(tokens: List<SimpleToken>): Map<Boolean, List<SimpleToken>> =
+        tokens.mapNotNull { token ->
+            tokenRepository.getTokenByAddress(token.address).getOrHandle {
+                logger.error("Failed to check token : ${it.message}")
+                null
             }
-            is Either.Right -> {
-                if (tokenInfoResult.value.recommendedCovers.isEmpty()) {
-                    token
-                } else {
-                    null
-                }
-            }
-        }
+        }.groupBy { it.recommendedCovers.isEmpty() }
 }

@@ -1,5 +1,7 @@
 package fr.hadaly.ethplorer.model
 
+import fr.hadaly.core.model.Wallet
+import fr.hadaly.ethplorer.toSimpleToken
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,7 +15,7 @@ data class AddressInfo(
     val tokenInfo: TokenInfo? = null
 )
 
-fun AddressInfo.toWalletInfo(): WalletInfo {
+fun AddressInfo.toWallet(): Wallet {
     require(contractInfo == null && tokenInfo == null) { IllegalArgumentException("Address is not a wallet") }
-    return WalletInfo(address, ethInfo, transactionCount, tokens)
+    return Wallet(address, transactionCount, tokens.map { it.tokenInfo.toSimpleToken() })
 }

@@ -21,6 +21,22 @@ fun Route.cover(coverRepository: CoverRepository, engine: RecommendationEngine) 
             call.respond(coverRepository.getAllCovers())
         }
 
+        get("/{address}") {
+            if (call.parameters.contains("address")) {
+                val address = call.parameters.getOrFail("address")
+                call.application.environment.log.debug("Requesting cover $address")
+                when(val cover = coverRepository.getCoverByAddress(address)) {
+                    is Either.Left -> {
+                        call.respond(HttpStatusCode.NotFound, "Unknown cover address")
+                    }
+                    is Either.Right -> {
+                        call.respond(cover.value)
+                    }
+                }
+
+            }
+        }
+
         get("/recommend/{wallet}") {
             if (call.parameters.contains("wallet")) {
                 val wallet = call.parameters.getOrFail("wallet")

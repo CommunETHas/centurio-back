@@ -1,20 +1,22 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues>
-    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$130</ID>
-    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$132</ID>
-    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$66</ID>
-    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$66</ID>
-    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$130</ID>
-    <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$16</ID>
-    <ID>MatchingDeclarationName:Cover.kt$Cover</ID>
-    <ID>SwallowedException:RecommandationEngine.kt$RecommandationEngine$catch (error: NoSuchElementException) { tokenService.addToken(token.toSimpleToken()) token }</ID>
-    <ID>SwallowedException:TokenServiceImpl.kt$TokenServiceImpl$catch (error: ExposedSQLException) { exposedLogger.info("Cover ${recommandation.name} is already registered for ${tokenEntity.symbol} token") }</ID>
-    <ID>MagicNumber:NotificationServiceImpl.kt$NotificationServiceImpl$7L</ID>
-  </ManuallySuppressedIssues>
-  <CurrentIssues>
       <ID>ClassNaming:V1__create_tables.kt$V1__create_tables : BaseJavaMigration</ID>
       <ID>ClassNaming:V2__update_user.kt$V2__update_user : BaseJavaMigration</ID>
+      <ID>ClassNaming:V3__update_recommandation.kt$V3__update_recommandation : BaseJavaMigration</ID>
+      <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$130</ID>
+      <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$132</ID>
+      <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$66</ID>
+      <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$66</ID>
+      <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$130</ID>
+      <ID>MagicNumber:AuthenticationRequestHandler.kt$AuthenticationRequestHandler$16</ID>
+      <ID>MatchingDeclarationName:Cover.kt$Cover</ID>
+      <ID>SwallowedException:RecommandationEngine.kt$RecommandationEngine$catch (error: NoSuchElementException) { tokenService.addToken(token.toSimpleToken()) token }</ID>
+      <ID>MagicNumber:NotificationServiceImpl.kt$NotificationServiceImpl$7L</ID>
+  </ManuallySuppressedIssues>
+  <CurrentIssues>
+      <ID>TooManyFunctions:CoverLocalDataSource.kt$CoverLocalDataSource : LocalDataSource</ID>
       <ID>EmptyKtFile:settings.gradle.kts$.settings.gradle.kts</ID>
+      <ID>SwallowedException:TokenLocalDataSourceImpl.kt$TokenLocalDataSourceImpl$catch (error: ExposedSQLException) { exposedLogger.info("Cover ${recommendation.name} is already registered for ${tokenEntity.symbol} token") }</ID>
   </CurrentIssues>
 </SmellBaseline>

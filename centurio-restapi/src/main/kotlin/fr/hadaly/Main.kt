@@ -1,13 +1,12 @@
 package fr.hadaly
 
+import fr.hadaly.core.di.coreModule
 import fr.hadaly.di.restApiModule
 import fr.hadaly.engine.di.engineModule
 import fr.hadaly.ethplorer.di.ethplorerApiModule
 import fr.hadaly.module.authenticationModule
 import fr.hadaly.module.corsModule
-import fr.hadaly.nexusapi.di.nexusApiModule
-import fr.hadaly.notification.di.notificationModule
-import fr.hadaly.persistence.di.persistenceModule
+import fr.hadaly.module.koinModules
 import fr.hadaly.persistence.service.DatabaseFactory
 import fr.hadaly.util.JsonMapper
 import fr.hadaly.util.JwtConfig
@@ -28,11 +27,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
-import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.get
-import org.koin.logger.slf4jLogger
 
 @Suppress("unused") // Referenced in application.conf
 @ExperimentalCoroutinesApi
@@ -44,18 +39,7 @@ fun Application.module() {
         json(JsonMapper.defaultMapper)
     }
 
-    install(Koin) {
-        slf4jLogger()
-        modules(
-            module { single { environment.config } },
-            restApiModule,
-            nexusApiModule,
-            ethplorerApiModule,
-            persistenceModule,
-            engineModule,
-            notificationModule
-        )
-    }
+    koinModules()
 
     val jwtConfig: JwtConfig = get { parametersOf(environment.config) }
     authenticationModule(jwtConfig)
