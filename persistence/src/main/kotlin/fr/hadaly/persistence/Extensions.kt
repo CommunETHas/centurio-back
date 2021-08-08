@@ -38,5 +38,6 @@ fun UserEntity.toUser() =
     User(
         address = address,
         email = email,
-        nonce = nonce
+        nonce = nonce,
+        frequency = frequency
     )
