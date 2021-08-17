@@ -1,6 +1,7 @@
 package fr.hadaly.ethplorer.model
 
 import fr.hadaly.ethplorer.model.serializer.BigIntegerSerializer
+import kotlinx.serialization.Required
 import kotlinx.serialization.Serializable
 import java.math.BigInteger
 
@@ -8,7 +9,7 @@ import java.math.BigInteger
 data class TokenInfo(
     val address: String, // Address
     val coingecko: String? = null,
-    val decimals: Int,
+    val decimals: Int? = null,
     val ethTransfersCount: Int? = null,
     val holdersCount: Int,
     val image: String? = null,
@@ -18,5 +19,5 @@ data class TokenInfo(
     val symbol: String,
     val owner: String? = null, // Address
     @Serializable(with = BigIntegerSerializer::class)
-    val totalSupply: BigInteger
+    val totalSupply: BigInteger? = null
 )
