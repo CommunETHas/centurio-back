@@ -5,12 +5,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable(with = ChainSerializer::class)
 enum class Chain {
-    ETHEREUM,
     BSC,
+    ETHEREUM,
     FANTOM,
+    OPTIMISM,
     POLYGON,
     STARKWARE,
-    XDAI,
     TERRA,
-    THORCHAIN
+    THORCHAIN,
+    XDAI,
 }
