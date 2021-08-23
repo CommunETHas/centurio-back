@@ -15,4 +15,6 @@ interface TokenRepository {
         suspend fun addTokens(tokens: Iterable<SimpleToken>)
 
         suspend fun updateTokens(tokens: Iterable<SimpleToken>)
+
+        suspend fun delete(token: String): Boolean
 }

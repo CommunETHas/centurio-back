@@ -6,7 +6,7 @@ import fr.hadaly.core.datasource.RemoteDataSource
 import fr.hadaly.core.model.SimpleToken
 
 class TokenRepositoryImpl(
-    val localDataSource: LocalDataSource<SimpleToken, Int>,
+    val localDataSource: LocalDataSource<SimpleToken, String>,
     val remoteDataSource: RemoteDataSource<SimpleToken, String>
 ) : TokenRepository {
 
@@ -42,5 +42,9 @@ class TokenRepositoryImpl(
 
     override suspend fun updateTokens(tokens: Iterable<SimpleToken>) {
         localDataSource.updateAll(tokens)
+    }
+
+    override suspend fun delete(token: String): Boolean {
+        return localDataSource.delete(token)
     }
 }
