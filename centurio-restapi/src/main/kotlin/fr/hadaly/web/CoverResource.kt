@@ -3,7 +3,6 @@ package fr.hadaly.web
 import arrow.core.Either
 import fr.hadaly.core.service.CoverRepository
 import fr.hadaly.core.service.RecommendationEngine
-import fr.hadaly.persistence.service.CoverService
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -40,16 +39,15 @@ fun Route.cover(coverRepository: CoverRepository, engine: RecommendationEngine) 
         get("/recommend/{wallet}") {
             if (call.parameters.contains("wallet")) {
                 val wallet = call.parameters.getOrFail("wallet")
-                when(val recommandations = engine.recommendFor(wallet)) {
+                when(val recommendations = engine.recommendFor(wallet)) {
                     is Either.Left -> {
-                        call.respond(HttpStatusCode.BadRequest, recommandations.value.localizedMessage)
+                        call.respond(HttpStatusCode.BadRequest, recommendations.value.localizedMessage)
                     }
                     is Either.Right -> {
-                        call.respond(recommandations.value)
+                        call.respond(recommendations.value)
                     }
                 }
             }
         }
     }
-
 }

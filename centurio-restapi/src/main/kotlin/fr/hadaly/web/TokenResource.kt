@@ -41,6 +41,18 @@ fun Route.token(tokenRequestHandler: TokenRequestHandler) {
                 }
             }
 
+            delete("/{address}") {
+                if (call.parameters.contains("address")) {
+                    val address = call.parameters.getOrFail("address")
+                    call.application.environment.log.debug("Requesting token $address")
+                    if (tokenRequestHandler.delete(address)) {
+                        call.respond(HttpStatusCode.NotFound, "Unknown token address")
+                    } else {
+                        call.respond(HttpStatusCode.OK)
+                    }
+                }
+            }
+
             post {
                 val tokenRequest = call.receive<List<TokenRequest>>()
                 call.application.environment.log.info(tokenRequest.toString())

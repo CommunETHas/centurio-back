@@ -61,6 +61,20 @@ window.swaggerSpec={
             "$ref" : "#/definitions/TokenRequest"
           }
         } ]
+      },
+      "get" : {
+        "tags" : [ "token" ],
+        "summary" : "Get all tokens supported by Centurio",
+        "description" : "",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Tokens"
+            }
+          }
+        }
       }
     },
     "/cover" : {
@@ -305,6 +319,12 @@ window.swaggerSpec={
         "owner" : {
           "type" : "string"
         }
+      }
+    },
+    "Tokens" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/Token"
       }
     },
     "Recommandation" : {

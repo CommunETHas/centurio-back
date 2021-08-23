@@ -49,4 +49,6 @@ class TokenRequestHandler(
     suspend fun getToken(address: String) = tokenRepository.getTokenByAddress(address)
 
     suspend fun getTokens() = tokenRepository.getTokens()
+
+    suspend fun delete(token: String) = tokenRepository.delete(token)
 }

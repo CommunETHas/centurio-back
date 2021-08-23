@@ -52,6 +52,18 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/TokenRequest"
+    get:
+      tags:
+        - "token"
+      summary: "Get all tokens supported by Centurio"
+      description: ""
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Tokens"
   /cover:
     get:
       tags:
@@ -241,6 +253,10 @@ definitions:
         type: "string"
       owner:
         type: "string"
+  Tokens:
+    type: "array"
+    items:
+      $ref: "#/definitions/Token"
   Recommandation:
     type: "object"
     properties:
