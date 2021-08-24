@@ -106,7 +106,7 @@ allprojects {
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
         implementation("io.arrow-kt:arrow-core:$arrowVersion")
         testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-        testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
+        testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.30")
     }
 
     tasks.withType<Test> {
