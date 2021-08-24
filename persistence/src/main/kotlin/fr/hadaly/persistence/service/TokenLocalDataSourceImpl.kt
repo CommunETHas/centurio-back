@@ -4,7 +4,12 @@ import arrow.core.Either
 import fr.hadaly.core.datasource.LocalDataSource
 import fr.hadaly.core.model.Cover
 import fr.hadaly.core.model.SimpleToken
-import fr.hadaly.persistence.entity.*
+import fr.hadaly.persistence.entity.CoverEntity
+import fr.hadaly.persistence.entity.Covers
+import fr.hadaly.persistence.entity.TokenEntity
+import fr.hadaly.persistence.entity.Tokens
+import fr.hadaly.persistence.entity.TokensCovers
+import fr.hadaly.persistence.entity.UnderlyingToken
 import fr.hadaly.persistence.service.DatabaseFactory.dbQuery
 import fr.hadaly.persistence.toToken
 import org.jetbrains.exposed.sql.*
@@ -27,7 +32,7 @@ class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, String> {
 
     override suspend fun getByKey(key: Pair<String, String>): Either<Throwable, SimpleToken> = dbQuery {
         Either.catch {
-            when(key.first) {
+            when (key.first) {
                 "address" -> {
                     val token = TokenEntity.find { Tokens.address eq key.second }.first().toToken()
                     logger.debug("Token is $token")
@@ -102,7 +107,8 @@ class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, String> {
             token.underlyingTokens.forEach { simpleToken ->
                 UnderlyingToken.new {
                     parent = tokenEntity.id
-                    child = TokenEntity.find { Tokens.address.lowerCase() eq simpleToken.address.lowercase() }.first().id
+                    child =
+                        TokenEntity.find { Tokens.address.lowerCase() eq simpleToken.address.lowercase() }.first().id
                 }
             }
         }

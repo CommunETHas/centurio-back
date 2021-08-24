@@ -2,7 +2,11 @@ package fr.hadaly.persistence.service
 
 import fr.hadaly.core.model.Cover
 import fr.hadaly.core.model.SimpleToken
-import fr.hadaly.persistence.entity.*
+import fr.hadaly.persistence.entity.CoverEntity
+import fr.hadaly.persistence.entity.Covers
+import fr.hadaly.persistence.entity.TokenEntity
+import fr.hadaly.persistence.entity.Tokens
+import fr.hadaly.persistence.entity.TokensCovers
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.exposedLogger

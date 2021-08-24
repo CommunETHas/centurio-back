@@ -17,6 +17,9 @@
   <CurrentIssues>
       <ID>TooManyFunctions:CoverLocalDataSource.kt$CoverLocalDataSource : LocalDataSource</ID>
       <ID>EmptyKtFile:settings.gradle.kts$.settings.gradle.kts</ID>
+      <ID>SwallowedException:RecommandationLocalDataSourceImpl.kt$RecommandationLocalDataSourceImpl$catch (error: ExposedSQLException) { exposedLogger.info("Cover ${recommendation.name} is already registered for ${tokenEntity.symbol} token") }</ID>
       <ID>SwallowedException:TokenLocalDataSourceImpl.kt$TokenLocalDataSourceImpl$catch (error: ExposedSQLException) { exposedLogger.info("Cover ${recommendation.name} is already registered for ${tokenEntity.symbol} token") }</ID>
+      <ID>UnusedPrivateMember:RecommandationLocalDataSourceImpl.kt$RecommandationLocalDataSourceImpl$private suspend fun addRecommandation( tokenEntity: SimpleToken, recommendation: Cover )</ID>
+      <ID>UnusedPrivateMember:TokenLocalDataSourceImpl.kt$TokenLocalDataSourceImpl$val entities = tokens.map { token -> val entity = TokenEntity.new { name = token.name address = token.address owner = token.owner symbol = token.symbol } token.recommendedCovers.forEach { recommendation -> addRecommandation(token, recommendation) } val recommandations = CoverEntity.find { Covers.id inList TokensCovers.select { TokensCovers.token eq entity.id }.map { it[TokensCovers.cover] } } entity.apply { recommendedCovers = recommandations } }</ID>
   </CurrentIssues>
 </SmellBaseline>
