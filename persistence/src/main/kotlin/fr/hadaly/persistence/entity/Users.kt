@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.`java-time`.datetime
 
-object Users: IntIdTable() {
+internal object Users: IntIdTable() {
     val address = varchar("address", 42).uniqueIndex()
     val email = varchar("email", 255).nullable()
     val nonce = varchar("nonce", 255)
@@ -14,7 +14,7 @@ object Users: IntIdTable() {
     val notifiedAt = datetime("notifiedAt").nullable()
 }
 
-class UserEntity(id: EntityID<Int>): IntEntity(id) {
+internal class UserEntity(id: EntityID<Int>): IntEntity(id) {
     companion object : IntEntityClass<UserEntity>(Users)
     var email by Users.email
     var address by Users.address

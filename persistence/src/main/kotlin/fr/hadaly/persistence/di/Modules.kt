@@ -12,7 +12,7 @@ import org.koin.dsl.module
 
 val persistenceModule = module {
     single<LocalDataSource<Cover, Int>>(named("coverPersistence")) { CoverLocalDataSource() }
-    single<LocalDataSource<SimpleToken, Int>>(named("tokenPersistence")) {
+    single<LocalDataSource<SimpleToken, String>>(named("tokenPersistence")) {
         TokenLocalDataSourceImpl()
     }
     single<UserRepository> { UserServiceImpl() }

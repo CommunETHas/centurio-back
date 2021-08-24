@@ -11,7 +11,7 @@ import fr.hadaly.persistence.entity.CoverEntity
 import fr.hadaly.persistence.entity.TokenEntity
 import fr.hadaly.persistence.entity.UserEntity
 
-fun TokenEntity.toToken(): SimpleToken =
+internal fun TokenEntity.toToken(): SimpleToken =
     SimpleToken(
         name = name,
         address = address,
@@ -23,7 +23,7 @@ fun TokenEntity.toToken(): SimpleToken =
     )
 
 
-fun CoverEntity.toCover() =
+internal fun CoverEntity.toCover() =
     Cover(
         name = name,
         address = address,
@@ -34,7 +34,7 @@ fun CoverEntity.toCover() =
         }
     )
 
-fun UserEntity.toUser() =
+internal fun UserEntity.toUser() =
     User(
         address = address,
         email = email,

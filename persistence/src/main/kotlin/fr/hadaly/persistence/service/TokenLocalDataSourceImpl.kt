@@ -4,42 +4,42 @@ import arrow.core.Either
 import fr.hadaly.core.datasource.LocalDataSource
 import fr.hadaly.core.model.Cover
 import fr.hadaly.core.model.SimpleToken
-import fr.hadaly.persistence.entity.CoverEntity
-import fr.hadaly.persistence.entity.Covers
-import fr.hadaly.persistence.entity.TokenEntity
-import fr.hadaly.persistence.entity.Tokens
-import fr.hadaly.persistence.entity.TokensCovers
+import fr.hadaly.persistence.entity.*
 import fr.hadaly.persistence.service.DatabaseFactory.dbQuery
 import fr.hadaly.persistence.toToken
-import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.exceptions.ExposedSQLException
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.exposedLogger
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.lowerCase
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.*
+import org.slf4j.LoggerFactory
 
-class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, Int> {
+class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, String> {
+    private val logger = LoggerFactory.getLogger(TokenLocalDataSourceImpl::class.java)
 
     override suspend fun getAll(): List<SimpleToken> = dbQuery {
         TokenEntity.all().map { it.toToken() }
     }
 
-    override suspend fun getById(id: Int): Either<Throwable, SimpleToken> = dbQuery {
-        Either.catch {  TokenEntity[id].toToken() }
+    override suspend fun getById(id: String): Either<Throwable, SimpleToken> = dbQuery {
+        Either.catch {
+            val token = TokenEntity.find { Tokens.address.lowerCase() eq id.lowercase() }.first().toToken()
+            logger.debug("Token is $token")
+            token
+        }
     }
 
     override suspend fun getByKey(key: Pair<String, String>): Either<Throwable, SimpleToken> = dbQuery {
         Either.catch {
             when(key.first) {
-                "address" -> TokenEntity.find { Tokens.address eq key.second }.first().toToken()
+                "address" -> {
+                    val token = TokenEntity.find { Tokens.address eq key.second }.first().toToken()
+                    logger.debug("Token is $token")
+                    token
+                }
                 else -> throw NoSuchElementException("Unsupported key ${key.second}")
             }
         }
     }
 
-    override suspend fun delete(id: Int): Boolean = dbQuery {
-        val result = Tokens.deleteWhere { Tokens.id eq id }
+    override suspend fun delete(id: String): Boolean = dbQuery {
+        val result = Tokens.deleteWhere { Tokens.address.lowerCase() eq id.lowercase() }
         result > 0
     }
 
@@ -48,17 +48,24 @@ class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, Int> {
     }
 
     override suspend fun addAll(tokens: Iterable<SimpleToken>) = dbQuery {
-        tokens.map { token ->
-            TokenEntity.new {
+        val entities = tokens.map { token ->
+            val entity = TokenEntity.new {
                 name = token.name
                 address = token.address
                 owner = token.owner
                 symbol = token.symbol
             }
-        }
-        tokens.forEach { tokenEntity ->
-            tokenEntity.recommendedCovers.forEach { recommendation ->
-                addRecommandation(tokenEntity, recommendation)
+            token.recommendedCovers.forEach { recommendation ->
+                addRecommandation(token, recommendation)
+            }
+
+            val recommandations = CoverEntity.find {
+                Covers.id inList TokensCovers.select { TokensCovers.token eq entity.id }.map {
+                    it[TokensCovers.cover]
+                }
+            }
+            entity.apply {
+                recommendedCovers = recommandations
             }
         }
     }
@@ -70,30 +77,33 @@ class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, Int> {
     private suspend fun addRecommandation(
         tokenEntity: SimpleToken,
         recommendation: Cover
-    ) {
-        try {
-            newSuspendedTransaction(Dispatchers.Default) {
-                TokensCovers.insert {
-                    it[token] = TokenEntity.find {
-                        Tokens.address.lowerCase() eq tokenEntity.address.lowercase()
-                    }.first().id
-                    it[cover] = CoverEntity.find {
-                        Covers.address.lowerCase() eq recommendation.address.lowercase()
-                    }.first().id
-                }
+    ) = dbQuery {
+        if (!tokenEntity.recommendedCovers.contains(recommendation)) {
+            TokensCovers.insert {
+                it[token] = TokenEntity.find {
+                    Tokens.address.lowerCase() eq tokenEntity.address.lowercase()
+                }.first().id
+                it[cover] = CoverEntity.find {
+                    Covers.address.lowerCase() eq recommendation.address.lowercase()
+                }.first().id
             }
-        } catch (error: ExposedSQLException) {
-            exposedLogger.info("Cover ${recommendation.name} is already registered for ${tokenEntity.symbol} token")
         }
     }
 
     override suspend fun add(token: SimpleToken) {
         dbQuery {
-            TokenEntity.new {
+            val tokenEntity = TokenEntity.new {
                 name = token.name
                 address = token.address
                 owner = token.owner
                 symbol = token.symbol
+            }
+
+            token.underlyingTokens.forEach { simpleToken ->
+                UnderlyingToken.new {
+                    parent = tokenEntity.id
+                    child = TokenEntity.find { Tokens.address.lowerCase() eq simpleToken.address.lowercase() }.first().id
+                }
             }
         }
     }

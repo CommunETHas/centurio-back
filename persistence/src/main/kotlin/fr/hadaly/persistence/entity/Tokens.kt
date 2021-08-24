@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Table
 
-object Tokens : IntIdTable() {
+internal object Tokens : IntIdTable() {
     val name = varchar("name", 255)
     val address = varchar("address", 42).uniqueIndex()
     val owner = varchar("owner", 42).nullable()
@@ -15,7 +15,7 @@ object Tokens : IntIdTable() {
     override val primaryKey = PrimaryKey(id)
 }
 
-class TokenEntity(id: EntityID<Int>): IntEntity(id) {
+internal class TokenEntity(id: EntityID<Int>): IntEntity(id) {
     companion object : IntEntityClass<TokenEntity>(Tokens)
     var name by Tokens.name
     var address by Tokens.address
@@ -26,18 +26,18 @@ class TokenEntity(id: EntityID<Int>): IntEntity(id) {
     val underlyingTokens by UnderlyingToken referrersOn UnderlyingTokens.parent
 }
 
-object UnderlyingTokens: IntIdTable() {
+internal object UnderlyingTokens: IntIdTable() {
     val parent = reference("parent", Tokens)
     val child = reference("child", Tokens)
 }
 
-class UnderlyingToken(id: EntityID<Int>): IntEntity(id) {
+internal class UnderlyingToken(id: EntityID<Int>): IntEntity(id) {
     companion object: IntEntityClass<UnderlyingToken>(UnderlyingTokens)
     var parent by UnderlyingTokens.parent
     var child by UnderlyingTokens.child
 }
 
-object TokensCovers: Table() {
+internal object TokensCovers: Table() {
     val token = reference("token", Tokens)
     val cover = reference("cover", Covers)
     val reason = text("reason").nullable()

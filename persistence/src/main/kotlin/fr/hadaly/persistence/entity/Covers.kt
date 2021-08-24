@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Table
 
-object Covers : IntIdTable() {
+internal object Covers : IntIdTable() {
     val name = varchar("name", 255)
     val address = varchar("address", 255).uniqueIndex()
     val type = varchar("type", 32)
@@ -18,7 +18,7 @@ object Covers : IntIdTable() {
     override val primaryKey = PrimaryKey(id)
 }
 
-class CoverEntity(id: EntityID<Int>) : IntEntity(id) {
+internal class CoverEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<CoverEntity>(Covers)
 
     var name by Covers.name
