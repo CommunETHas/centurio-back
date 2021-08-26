@@ -2,7 +2,7 @@ import io.gitlab.arturbosch.detekt.Detekt
 
 val logbackVersion = "1.2.5"
 val koinVersion = "3.1.2"
-val ktorVersion = "1.6.2"
+val ktorVersion = "1.6.3"
 val arrowVersion = "0.13.2"
 
 buildscript {
@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
     }
 }
 
@@ -85,8 +85,8 @@ allprojects {
     extra["hikariCpVersion"] = "4.0.3"
     extra["junitVersion"] = "5.7.2"
     extra["koinVersion"] = "3.1.2"
-    extra["kotlinVersion"] = "1.5.21"
-    extra["ktorVersion"] = "1.6.1"
+    extra["kotlinVersion"] = "1.5.30"
+    extra["ktorVersion"] = "1.6.3"
     extra["logbackVersion"] = "1.2.3"
     extra["postgreVersion"] = "42.2.23"
     extra["restAssuredVersion"] = "4.4.0"
@@ -106,7 +106,7 @@ allprojects {
         implementation("ch.qos.logback:logback-classic:$logbackVersion")
         implementation("io.arrow-kt:arrow-core:$arrowVersion")
         testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-        testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
+        testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.30")
     }
 
     tasks.withType<Test> {
