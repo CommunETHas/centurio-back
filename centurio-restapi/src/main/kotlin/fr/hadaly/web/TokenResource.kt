@@ -53,6 +53,19 @@ fun Route.token(tokenRequestHandler: TokenRequestHandler) {
                 }
             }
 
+            put("/{address}") {
+                kotlin.runCatching {
+                    val token = call.receive<SimpleToken>()
+                    call.application.environment.log.debug("Requesting token $token")
+                    tokenRequestHandler.updateToken(token)
+                }.onSuccess {
+                    call.respond(HttpStatusCode.Accepted, "Updated token")
+                }.onFailure {
+                    call.application.environment.log.error(it.message.toString())
+                    call.respond(HttpStatusCode.InternalServerError)
+                }
+            }
+
             post {
                 val tokenRequest = call.receive<List<TokenRequest>>()
                 call.application.environment.log.info(tokenRequest.toString())

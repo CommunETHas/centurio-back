@@ -19,6 +19,7 @@ internal fun TokenEntity.toToken(): SimpleToken =
         owner = owner,
         known = known,
         recommendedCovers = recommendedCovers.map { it.toCover() },
+        underlyingTokens = underlyingTokens.map { it.toToken() },
         logoUrl = ResourceUrl("/asset/$address.png")
     )
 

@@ -51,4 +51,6 @@ class TokenRequestHandler(
     suspend fun getTokens() = tokenRepository.getTokens()
 
     suspend fun delete(token: String) = tokenRepository.delete(token)
+
+    suspend fun updateToken(token: SimpleToken) = tokenRepository.updateToken(token)
 }

@@ -39,6 +39,31 @@ window.swaggerSpec={
             "description" : "Unknown/Invalid Token Address"
           }
         }
+      },
+      "put" : {
+        "tags" : [ "token" ],
+        "summary" : "Update Token",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "address",
+          "in" : "path",
+          "description" : "Address of the Token",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "token",
+          "in" : "body",
+          "description" : "Updated Token",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Token"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User updated"
+          }
+        }
       }
     },
     "/token" : {
@@ -167,7 +192,7 @@ window.swaggerSpec={
       },
       "put" : {
         "tags" : [ "user" ],
-        "summary" : "Create user",
+        "summary" : "Update user",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "address",

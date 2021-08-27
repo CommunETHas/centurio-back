@@ -23,7 +23,7 @@ internal class TokenEntity(id: EntityID<Int>): IntEntity(id) {
     var known by Tokens.known
     var symbol by Tokens.symbol
     var recommendedCovers by CoverEntity via TokensCovers
-    val underlyingTokens by UnderlyingToken referrersOn UnderlyingTokens.parent
+    var underlyingTokens by TokenEntity.via(UnderlyingTokens.parent, UnderlyingTokens.child)
 }
 
 internal object UnderlyingTokens: IntIdTable() {

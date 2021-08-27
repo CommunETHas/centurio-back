@@ -115,7 +115,7 @@ class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, String> {
     }
 
     private suspend fun updateToken(token: SimpleToken) {
-        TokenEntity.find { Tokens.address eq token.address }
+        val tokenEntity = TokenEntity.find { Tokens.address eq token.address }
             .first().apply {
                 address = token.address
                 name = token.name
@@ -124,6 +124,14 @@ class TokenLocalDataSourceImpl : LocalDataSource<SimpleToken, String> {
 
         token.recommendedCovers.forEach { recommendation ->
             addRecommandation(token, recommendation)
+        }
+
+        token.underlyingTokens.forEach { simpleToken ->
+            UnderlyingToken.new {
+                parent = tokenEntity.id
+                child =
+                    TokenEntity.find { Tokens.address.lowerCase() eq simpleToken.address.lowercase() }.first().id
+            }
         }
     }
 }
