@@ -79,7 +79,7 @@ allprojects {
 
     extra["arrowVersion"] = "0.13.2"
     extra["assertjVersion"] = "3.20.2"
-    extra["exposedVersion"] = "0.32.1"
+    extra["exposedVersion"] = "0.33.1"
     extra["flywayVersion"] = "7.11.2"
     extra["h2Version"] = "1.4.200"
     extra["hikariCpVersion"] = "4.0.3"
@@ -131,5 +131,5 @@ tasks.create("stage") {
 
 tasks.withType<Detekt>().configureEach {
     // Target version of the generated JVM bytecode. It is used for type resolution.
-    this.jvmTarget = "1.8"
+    this.jvmTarget = "11"
 }
