@@ -18,7 +18,7 @@ fun Application.corsModule() {
             allowCredentials = true
         } else {
             val frontHost = environment.config.property("ktor.deployment.front_host").getString()
-            host(frontHost, schemes = listOf("https"))
+            host(frontHost, subDomains = listOf("www"), schemes = listOf("https"))
             method(HttpMethod.Post)
             method(HttpMethod.Put)
             header(HttpHeaders.Authorization)
