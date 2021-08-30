@@ -20,7 +20,7 @@ dependencies {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt") version "1.18.0"
+    id("io.gitlab.arturbosch.detekt") version "1.18.1"
     id("org.hidetake.swagger.generator") version "2.18.2"
     java
 }
