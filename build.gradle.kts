@@ -2,7 +2,7 @@ import io.gitlab.arturbosch.detekt.Detekt
 
 val logbackVersion = "1.2.5"
 val koinVersion = "3.1.2"
-val ktorVersion = "1.6.2"
+val ktorVersion = "2.0.2"
 val arrowVersion = "0.13.2"
 
 buildscript {
