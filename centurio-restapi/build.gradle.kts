@@ -8,7 +8,7 @@ val junitVersion = "5.7.2"
 val koinVersion = "3.1.0"
 
 plugins {
-    kotlin("plugin.serialization") version "1.5.21"
+    kotlin("plugin.serialization") version "1.7.0"
     application
 }
 
